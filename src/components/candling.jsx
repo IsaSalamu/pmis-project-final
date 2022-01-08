@@ -5,6 +5,7 @@ class Vaccine extends Component {
         return (
             <div>
                 <p>For candling component</p>
+                <h1>A table for candling operations</h1>
             </div>
         );
     }
