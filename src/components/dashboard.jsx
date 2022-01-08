@@ -1,7 +1,8 @@
 import React, { Component } from 'react'
 import CustomSideBar from './CustomSideBar'
 import {Button, Card} from 'react-bootstrap'
-import NewChart from './charts/chart1'
+import { ChartComponent } from './charts/chart1'
+
 export default class Dashboard extends Component {
     render() {
         return (
@@ -12,20 +13,22 @@ export default class Dashboard extends Component {
                     <div className="col-sm-12">
 
                         <div className="row">
-                        <Card style={{width:"16rem", marginRight:"10px"}}>
+                        <Card style={{width:"18rem", marginRight:"10px"}}>
                     
                         <Card.Body>
                             <Card.Title>Motality</Card.Title>
                                 <Card.Text>
-                                <button type="button" className="btn btn-primary">
+                                {/* <button type="button" className="btn btn-primary">
                                 Dead <span className="badge bg-danger">24</span>
-                                </button>
+                                </button> */}
+
+                                <ChartComponent/>
                             </Card.Text>
                             
                         </Card.Body>
                         </Card>
 
-                        <Card style={{width:"16rem", marginRight:"10px"}}>
+                        <Card style={{width:"18rem", marginRight:"10px"}}>
                     
                         <Card.Body>
                             <Card.Title>Feed</Card.Title>
@@ -37,19 +40,21 @@ export default class Dashboard extends Component {
                         </Card>
 
 
-                        <Card style={{width:"16rem", marginRight:"10px"}}>
+                        <Card style={{width:"18rem", marginRight:"10px"}}>
                     
                         <Card.Body>
                             <Card.Title>Egg Fertility</Card.Title>
-                            <Card.Text>
+                            {/* <Card.Text>
                                 75% 
                                 pie chart aside
                             </Card.Text>
-                            
+                             */}
+                             {/* <FertilityComponent/> */}
+                             <ChartComponent/>
                         </Card.Body>
                         </Card>
 
-                        <Card style={{width:"16rem"}}>
+                        <Card style={{width:"18rem"}}>
                     
                         <Card.Body>
                             <Card.Title>Vaccination</Card.Title>
@@ -61,7 +66,7 @@ export default class Dashboard extends Component {
                         </Card>
                         </div>
 
-                        <NewChart/>
+                        
                     
                     </div>
                     

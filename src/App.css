@@ -44,3 +44,8 @@
   background-color: #3c64B4 !important;
 
 }
+
+.chart_css{
+  align-items: center;
+  width: 400px;
+}

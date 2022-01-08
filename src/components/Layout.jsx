@@ -57,17 +57,17 @@ export default class Layout extends Component {
               <Dashboard/>
           </Tab.Pane>
         <Tab.Pane eventKey="first">
-          {/* <Sonnet /> */}
+          
           <FeedEntry/>
         </Tab.Pane>
 
         <Tab.Pane eventKey="vacci">
-          {/* <Sonnet /> */}
+        
           <Vaccine/>
         </Tab.Pane>
 
         <Tab.Pane eventKey="second">
-          {/* <Sonnet /> */}
+          
           <p>Data to be populated</p>
         </Tab.Pane>
 

@@ -1,11 +1,13 @@
 import React, { Component } from 'react';
-
+import { ChartComponent } from './charts/chart1'
 class Vaccine extends Component {
     render() {
         return (
             <div>
-                <p>For candling component</p>
-                <h1>A table for candling operations</h1>
+                <div className='chart_css'>
+                    
+                </div>
+                <hr/>
             </div>
         );
     }
