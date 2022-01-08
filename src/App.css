@@ -31,3 +31,16 @@
     transform: rotate(360deg);
   }
 } */
+
+.bg_color{
+  background-color: #3c64B4 !important;
+}
+
+.nav.nav-pills .nav-link.active {
+  background-color: #3c64B4 !important;
+}
+
+.nav.nav-tabs .nav-link.active {
+  background-color: #3c64B4 !important;
+
+}
