@@ -3,6 +3,7 @@ import {Accordion, Card,Tab, Row, Nav, Col} from 'react-bootstrap'
 import Dashboard from './dashboard'
 import FeedEntry from './FeedEntry'
 import Vaccine from './candling'
+import StockData from './StockData'
 
 export default class Layout extends Component {
     render() {
@@ -44,6 +45,10 @@ export default class Layout extends Component {
                                 <Nav.Item>
                       <Nav.Link eventKey="poultry2">Vaccination</Nav.Link>
                                 </Nav.Item>
+
+                                <Nav.Item>
+                      <Nav.Link eventKey="poultry3">Stock</Nav.Link>
+                                </Nav.Item>
                   </Accordion.Body>
               </Accordion.Item>
           </Accordion>
@@ -77,6 +82,12 @@ export default class Layout extends Component {
 
           <Tab.Pane eventKey="poultry2">
               Infor for Vaccination
+          </Tab.Pane>
+
+          <Tab.Pane eventKey="poultry3">
+            
+
+              <StockData/>
           </Tab.Pane>
       </Tab.Content>
     </Col>

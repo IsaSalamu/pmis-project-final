@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { Table } from 'react-bootstrap'
 import * as FaIcons from 'react-icons/fa'
-export default class FeedEntry extends Component {
+export default class StockData extends Component {
     render() {
         return (
             <div>
