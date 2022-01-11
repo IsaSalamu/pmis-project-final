@@ -49,3 +49,30 @@
   align-items: center;
   width: 400px;
 }
+.footer-css{
+
+  text-align: center;
+  background-color: #3c64B4;
+  height: 50px !important;
+
+}
+
+.footer-text{
+  margin-top: 100vh;
+  position: fixed;
+  margin: 0;
+  position: relative;
+  top: 50%;
+  color: aliceblue;
+  left: 50%;
+  -ms-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
+}
+
+.col-bg-color{
+  background-color: rgb(122, 148, 196);
+}
+.margin-css{
+  position: relative;
+  margin-right: 0 !important;
+}

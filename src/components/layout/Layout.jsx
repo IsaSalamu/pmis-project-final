@@ -4,6 +4,7 @@ import Dashboard from './dashboard'
 import FeedEntry from './FeedEntry'
 import Vaccine from './candling'
 import StockData from './StockData'
+import FooterComponent from './footerComponent'
 
 export default class Layout extends Component {
     render() {
@@ -11,8 +12,8 @@ export default class Layout extends Component {
             <div>
                 <Tab.Container id="left-tabs-example" defaultActiveKey="dash">
   <Row>
-    <Col sm={3}>
-      <Nav variant="pills" className="flex-column">
+    <Col sm={3} className='col-bg-color'>
+      <Nav variant="pills" className="flex-column margin-css">
         <Nav.Item>
           <Nav.Link eventKey="dash">Dashboard</Nav.Link>
         </Nav.Item>
@@ -28,7 +29,7 @@ export default class Layout extends Component {
                       <Nav.Link eventKey="vacci">Candling</Nav.Link>
                         </Nav.Item>  <Nav.Item>
 
-                        <Nav.Link eventKey="second">Offload</Nav.Link>
+                         
 
                     </Nav.Item>
                   </Accordion.Body>
@@ -47,7 +48,7 @@ export default class Layout extends Component {
                                 </Nav.Item>
 
                                 <Nav.Item>
-                      <Nav.Link eventKey="poultry3">Stock</Nav.Link>
+                      <Nav.Link eventKey="poultry3">Batch information</Nav.Link>
                                 </Nav.Item>
                   </Accordion.Body>
               </Accordion.Item>
@@ -67,14 +68,9 @@ export default class Layout extends Component {
         </Tab.Pane>
 
         <Tab.Pane eventKey="vacci">
-        
           <Vaccine/>
         </Tab.Pane>
-
-        <Tab.Pane eventKey="second">
-          
-          <p>Data to be populated</p>
-        </Tab.Pane>
+         
 
         <Tab.Pane eventKey="poultry1">
               Infor for feed
@@ -85,14 +81,13 @@ export default class Layout extends Component {
           </Tab.Pane>
 
           <Tab.Pane eventKey="poultry3">
-            
-
               <StockData/>
           </Tab.Pane>
       </Tab.Content>
     </Col>
   </Row>
 </Tab.Container>
+            <FooterComponent/>
             </div>
         )
     }

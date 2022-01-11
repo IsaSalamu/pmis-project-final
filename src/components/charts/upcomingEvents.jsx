@@ -46,7 +46,7 @@ export default class UpcomingEvents extends Component {
               options={this.state.options}
               series={this.state.series}
               type="bar"
-              width={400}
+              width={300}
               height={200}
             />
           </div>

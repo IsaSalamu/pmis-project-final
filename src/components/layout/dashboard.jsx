@@ -1,9 +1,9 @@
 import React, { Component } from 'react'
-import FeedChart from './charts/feedChart'
-import MortalityChart from './charts/MortalityChart'
-import UpcomingEvents from './charts/upcomingEvents'
-import VaccinationChart from './charts/vaccinationChart'
-import WaterChart from './charts/waterChart'
+import FeedChart from '../charts/feedChart'
+import MortalityChart from '../charts/MortalityChart'
+import UpcomingEvents from '../charts/upcomingEvents'
+import VaccinationChart from '../charts/vaccinationChart'
+import WaterChart from '../charts/waterChart'
 
 
 export default class Dashboard extends Component {
