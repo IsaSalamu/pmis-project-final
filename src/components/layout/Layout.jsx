@@ -60,7 +60,7 @@ export default class Layout extends Component {
     <Col sm={9}>
       <Tab.Content>
           <Tab.Pane eventKey="dash">
-              {/* <Dashboard/> */}
+              <Dashboard/>
           </Tab.Pane>
         <Tab.Pane eventKey="first">
           
@@ -68,7 +68,7 @@ export default class Layout extends Component {
         </Tab.Pane>
 
         <Tab.Pane eventKey="vacci">
-          {/* <Vaccine/> */}
+          <Vaccine/>
         </Tab.Pane>
          
 
@@ -81,7 +81,7 @@ export default class Layout extends Component {
           </Tab.Pane>
 
           <Tab.Pane eventKey="poultry3">
-              {/* <StockData/> */}
+              <StockData/>
           </Tab.Pane>
       </Tab.Content>
     </Col>
