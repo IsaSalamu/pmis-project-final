@@ -5,6 +5,7 @@ import FeedEntry from './FeedEntry'
 import Vaccine from './candling'
 import StockData from './StockData'
 import FooterComponent from './footerComponent'
+import HatcheryForm from './hatcheryForm'
 
 export default class Layout extends Component {
     render() {
@@ -12,7 +13,7 @@ export default class Layout extends Component {
             <div>
                 <Tab.Container id="left-tabs-example" defaultActiveKey="dash">
   <Row>
-    <Col sm={3} className='col-bg-color'>
+    <Col sm={3} className='col-bg-color height-css'>
       <Nav variant="pills" className="flex-column margin-css">
         <Nav.Item>
           <Nav.Link eventKey="dash">Dashboard</Nav.Link>
@@ -77,7 +78,7 @@ export default class Layout extends Component {
           </Tab.Pane>
 
           <Tab.Pane eventKey="poultry2">
-              Infor for Vaccination
+             <HatcheryForm/>
           </Tab.Pane>
 
           <Tab.Pane eventKey="poultry3">

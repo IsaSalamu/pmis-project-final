@@ -7,7 +7,7 @@ export default class Navbar extends Component {
             <div>
               <nav className="navbar navbar-light bg_color">
                   <div className="container-fluid">
-                    <a className="navbar-brand" style={{color:"whitesmoke"}}>Poultry Management Information System</a>
+                    <a className="navbar-brand" style={{color:"whitesmoke"}}>Poultry Information Management System</a>
 
                     <div className="d-flex">
                           <OverlayTrigger placement="left-start" overlay={<Tooltip id="tooltip-disabled" >Admin</Tooltip>}>

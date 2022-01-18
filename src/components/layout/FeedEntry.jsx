@@ -8,9 +8,9 @@ export default class FeedEntry extends Component {
                 <div className="row">
                     <div className="col-sm-12" style={{textAlign:"center"}}>
 
-                    <div class="btn-group" role="group" aria-label="Basic checkbox toggle button group" style={{marginBottom:"10px"}}>
-                <input type="checkbox" class="btn-check" id="btncheck1" autocomplete="off"/>
-                <label class="btn btn-outline-primary" for="btncheck1">
+                    <div className="btn-group" role="group" aria-label="Basic checkbox toggle button group" style={{marginBottom:"10px"}}>
+                <input type="checkbox" className="btn-check" id="btncheck1" autocomplete="off"/>
+                <label className="btn btn-outline-primary" for="btncheck1">
                     <FaIcons.FaPlus/> New
                 </label>
 

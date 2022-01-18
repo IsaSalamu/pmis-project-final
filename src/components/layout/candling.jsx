@@ -1,13 +1,12 @@
 import React, { Component } from 'react';
+import UploadFile from './uploadFile';
 
 class Vaccine extends Component {
     render() {
         return (
             <div>
-                <div className='chart_css'>
-                    
-                </div>
-                <hr/>
+                <UploadFile/>
+                
             </div>
         );
     }
