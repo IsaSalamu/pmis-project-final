@@ -1,11 +1,11 @@
 import React, { Component } from 'react'
-import {Accordion, Card,Tab, Row, Nav, Col} from 'react-bootstrap'
+import {Accordion,Tab, Row, Nav, Col} from 'react-bootstrap'
 import Dashboard from './dashboard'
 import FeedEntry from './FeedEntry'
 import Vaccine from './candling'
 import StockData from './StockData'
 import FooterComponent from './footerComponent'
-import HatcheryForm from './hatcheryForm'
+
 
 export default class Layout extends Component {
     render() {

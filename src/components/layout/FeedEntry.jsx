@@ -2,9 +2,11 @@ import React, { Component } from 'react'
 import { Table, Modal, Button } from 'react-bootstrap'
 import * as FaIcons from 'react-icons/fa'
 import HatcheryForm from './hatcheryForm'
+import CSVReader from 'react-csv-reader'
 export default class FeedEntry extends Component {
   state={
-    show: false
+    show: false,
+    data: []
   }
 
   handleShow = () =>{
@@ -14,13 +16,19 @@ export default class FeedEntry extends Component {
 handleClose = () =>{
   this.setState({show : false})
 }
+
+handleSave = () =>{
+  this.setState({show : false, data:[23, 45,11]})
+}
     render() {
         return (
             <div>
                 <div className="row">
                     <div className="col-sm-12" style={{textAlign:"center"}}>
-
-                    <div className="btn-group" role="group" aria-label="Basic checkbox toggle button group" style={{marginBottom:"10px"}}>
+                    <div className='row'>
+                <div className='col-md-4'></div>
+                <div className='col-md-2'>
+                <div className="btn-group" role="group" aria-label="Basic checkbox toggle button group" style={{marginBottom:"10px"}}>
                 <input type="button" className="btn-check" id="btncheck1" autocomplete="off"/>
                 <label className="btn btn-outline-primary" for="btncheck1" onClick={this.handleShow}>
                     <FaIcons.FaPlus/> New
@@ -29,6 +37,16 @@ handleClose = () =>{
 
                 
                 </div>
+                </div>
+                <div className='col-md-2'>
+               
+                <CSVReader onFileLoaded={(data)=> this.dataHndler(data.slice(1), data[0])}/>
+
+                </div>
+                <div className='col-md-4'></div>
+
+             </div>
+                   
 
               <Modal show={this.state.show} aria-labelledby="contained-modal-title-vcenter"
                 centered onHide={this.handleClose}>
@@ -37,14 +55,14 @@ handleClose = () =>{
                 </Modal.Header>
                 <Modal.Body>
                  
-                 <HatcheryForm/>
+                 <HatcheryForm data={this.state.data}/>
 
                   </Modal.Body>
                 <Modal.Footer>
                   <Button variant="secondary" onClick={this.handleClose}>
                     Close
                   </Button>
-                  <Button variant="primary" onClick={this.handleClose}>
+                  <Button variant="primary" onClick={this.handleSave}>
                     Save
                   </Button>
                 </Modal.Footer>
