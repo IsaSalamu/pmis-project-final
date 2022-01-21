@@ -1,7 +1,19 @@
 import React, { Component } from 'react'
-import { Table } from 'react-bootstrap'
+import { Table, Modal, Button } from 'react-bootstrap'
 import * as FaIcons from 'react-icons/fa'
+import HatcheryForm from './hatcheryForm'
 export default class FeedEntry extends Component {
+  state={
+    show: false
+  }
+
+  handleShow = () =>{
+    this.setState({show : true})
+  }
+
+handleClose = () =>{
+  this.setState({show : false})
+}
     render() {
         return (
             <div>
@@ -9,13 +21,34 @@ export default class FeedEntry extends Component {
                     <div className="col-sm-12" style={{textAlign:"center"}}>
 
                     <div className="btn-group" role="group" aria-label="Basic checkbox toggle button group" style={{marginBottom:"10px"}}>
-                <input type="checkbox" className="btn-check" id="btncheck1" autocomplete="off"/>
-                <label className="btn btn-outline-primary" for="btncheck1">
+                <input type="button" className="btn-check" id="btncheck1" autocomplete="off"/>
+                <label className="btn btn-outline-primary" for="btncheck1" onClick={this.handleShow}>
                     <FaIcons.FaPlus/> New
+                    
                 </label>
 
                 
                 </div>
+
+              <Modal show={this.state.show} aria-labelledby="contained-modal-title-vcenter"
+                centered onHide={this.handleClose}>
+                <Modal.Header closeButton>
+                  <Modal.Title>Hatchery Data Entry Form</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                 
+                 <HatcheryForm/>
+
+                  </Modal.Body>
+                <Modal.Footer>
+                  <Button variant="secondary" onClick={this.handleClose}>
+                    Close
+                  </Button>
+                  <Button variant="primary" onClick={this.handleClose}>
+                    Save
+                  </Button>
+                </Modal.Footer>
+              </Modal>
 
 
                     <Table striped bordered hover size="sm">

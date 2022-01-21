@@ -29,7 +29,7 @@ class Api{
 
     getTheDataElementsGroup = () => {
        
-        return fetch(`${this.config.baseUrl}/dataElementGroups/BM3U6ZvyJoz.json?fields=dataElements[id,name,formName]`, {
+        return fetch(`${this.config.baseUrl}/dataElementGroups/BM3U6ZvyJoz.json?fields=dataElements[id,name,formName, valueType]`, {
             method: 'GET',
             mode: 'cors',
             credentials: 'include',

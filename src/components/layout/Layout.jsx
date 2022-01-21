@@ -78,7 +78,7 @@ export default class Layout extends Component {
           </Tab.Pane>
 
           <Tab.Pane eventKey="poultry2">
-             <HatcheryForm/>
+             
           </Tab.Pane>
 
           <Tab.Pane eventKey="poultry3">
