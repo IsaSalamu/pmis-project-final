@@ -7,6 +7,7 @@ export default class HatcheryForm extends React.Component{
    
         state = {
             formDataElements:[],
+            trackedEntityAttributes: [],
             dataValues:[]
         }
    
@@ -14,14 +15,15 @@ export default class HatcheryForm extends React.Component{
     componentDidMount(){
         this.getDataElements()
         this.submitForm()
+        this.getPrograms()
 
       
     }
 
     getPrograms = () =>{
         Api.getThePrograms().then(data=>{
-
-            // console.log(data);
+            this.setState({trackedEntityAttributes: data.programTrackedEntityAttributes})
+            console.log(data.programTrackedEntityAttributes);
         })
     }
     submitForm =()=>{
@@ -47,63 +49,18 @@ export default class HatcheryForm extends React.Component{
 
     }
     render(){
-        let dataElements = this.state.formDataElements
+        let tracked = this.state.trackedEntityAttributes
         let forms =()=>{
-           return dataElements.map((dataElement, key)=>{
+           return tracked.map((entity, key)=>{
 
-               if (dataElement.valueType === "NUMBER") {
                 return (
                     <div className="mb-3" key={key}>
                        
-                        <input type={dataElement.valueType.toLowerCase()} min={0} className="form-control" id={dataElement.id} aria-describedby={dataElement.formName} placeholder={dataElement.formName} onChange={this.submitToHatchery}/>
+                        <input type={entity.valueType.toLowerCase()} className="form-control" id={entity.id} aria-describedby={entity.displayName} placeholder={entity.displayName} onChange={this.submitToHatchery}/>
                         
                     </div>
                 )
-               }else if (dataElement.formName === "Date Entry") {
-                return (
-                    <div className="mb-3" key={key}>
-                        <div className='row'>
-                        
-                        <div className='col-md-4'>
-                            <p>Date of Entry</p>
-                        </div> 
-                        <div className='col-md-8'>
-                        <input type={dataElement.valueType.toLowerCase()} className="form-control" id={dataElement.id} aria-describedby={dataElement.formName} placeholder={dataElement.formName} onChange={this.submitToHatchery}/>
-
-                        </div>
-                        </div>
-                       
-                        
-                    </div>
-                )
-               }
-               else if(dataElement.formName === "Date Offloaded"){
-                return (
-                    <div className="mb-3" key={key}>
-                        <div className='row'>
-                        
-                        <div className='col-md-4'>
-                            <p>Offloading Date</p>
-                        </div> 
-                        <div className='col-md-8'>
-                        <input type={dataElement.valueType.toLowerCase()} disabled className="form-control" id={dataElement.id} aria-describedby={dataElement.formName} onChange={this.submitToHatchery}/>
-
-                        </div>
-                        </div>
-                       
-                        
-                    </div>
-                )
-               }
-               else{
-                return (
-                    <div className="mb-3" key={key}>
-                       
-                        <input type={dataElement.valueType.toLowerCase()} className="form-control" id={dataElement.id} aria-describedby={dataElement.formName} placeholder={dataElement.formName} onChange={this.submitToHatchery}/>
-                        
-                    </div>
-                )
-               }
+               
               
             })
         }
@@ -114,9 +71,9 @@ export default class HatcheryForm extends React.Component{
                 <div className=''>
                 
                     <form>
-                        {
+                        {/* {
                             forms()
-                        }
+                        } */}
                 
     
                         </form>

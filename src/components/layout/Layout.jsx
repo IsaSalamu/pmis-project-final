@@ -5,6 +5,7 @@ import FeedEntry from './FeedEntry'
 import Vaccine from './candling'
 import StockData from './StockData'
 import FooterComponent from './footerComponent'
+import ReceivingForm from './receiving'
 
 
 export default class Layout extends Component {
@@ -25,8 +26,12 @@ export default class Layout extends Component {
 
                   <Accordion.Body>
                     <Nav.Item>
-                      <Nav.Link eventKey="first">Eggs</Nav.Link>
-                          </Nav.Item>  <Nav.Item>
+
+                      <Nav.Link eventKey="first">In Stock</Nav.Link>
+                          </Nav.Item>   <Nav.Item>
+                      <Nav.Link eventKey="receive">Register</Nav.Link>
+                      <Nav.Link eventKey="collect">Collecting</Nav.Link>
+                      
                       <Nav.Link eventKey="vacci">Candling</Nav.Link>
                         </Nav.Item>  <Nav.Item>
 
@@ -63,6 +68,12 @@ export default class Layout extends Component {
           <Tab.Pane eventKey="dash">
               <Dashboard/>
           </Tab.Pane>
+          
+          <Tab.Pane eventKey="receive">
+          
+          <ReceivingForm/>
+        </Tab.Pane>
+
         <Tab.Pane eventKey="first">
           
           <FeedEntry/>

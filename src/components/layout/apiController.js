@@ -15,9 +15,20 @@ class Api{
         this.config = config;
     };
 
-    getThePrograms = () => {
+    getTheTrackedEntityAttributesPrograms = (programId) => {
        
-        return fetch(`${this.config.baseUrl}/programs/BpsLcb2sBIJ.json`, {
+        return fetch(`${this.config.baseUrl}/programs/${programId}.json?fields=programTrackedEntityAttributes[id, displayName, valueType, program, trackedEntityAttribute[id]]`, {
+            method: 'GET',
+            mode: 'cors',
+            credentials: 'include',
+            headers,
+        })  .catch(error => error)
+            .then(response => response.json());
+    };
+
+    getTheTrackedEntityPrograms = () => {
+       
+        return fetch(`${this.config.baseUrl}/programs.json`, {
             method: 'GET',
             mode: 'cors',
             credentials: 'include',
@@ -26,7 +37,7 @@ class Api{
             .catch(error => error)
             .then(response => response.json());
     };
-
+    
     getTheDataElementsGroup = () => {
        
         return fetch(`${this.config.baseUrl}/dataElementGroups/BM3U6ZvyJoz.json?fields=dataElements[id,name,formName, valueType]`, {
