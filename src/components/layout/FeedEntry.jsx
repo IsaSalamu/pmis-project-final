@@ -18,7 +18,7 @@ handleClose = () =>{
 }
 
 handleSave = () =>{
-  this.setState({show : false, data:[23, 45,11]})
+  this.setState({data:[23, 45,11]})
 }
     render() {
         return (
@@ -35,7 +35,6 @@ handleSave = () =>{
                     
                 </label>
 
-                
                 </div>
                 </div>
                 <div className='col-md-2'>
@@ -47,9 +46,7 @@ handleSave = () =>{
 
              </div>
                    
-
-              <Modal show={this.state.show} aria-labelledby="contained-modal-title-vcenter"
-                centered onHide={this.handleClose}>
+              <Modal show={this.state.show} aria-labelledby="contained-modal-title-vcenter" centered onHide={this.handleClose} backdropClassName='static'>
                 <Modal.Header closeButton>
                   <Modal.Title>Hatchery Data Entry Form</Modal.Title>
                 </Modal.Header>

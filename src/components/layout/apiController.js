@@ -5,7 +5,7 @@ const headers = new Headers({
     'Content-type': 'application/json',
     Accept: 'application/json',
 });
-
+const url = "/optionSets/KooURD3UkQb.json?fields=displayName,options[id,name]"
 class Api{
     config = {
         baseUrl: 'https://176.57.184.192/demo/api/29',
@@ -17,7 +17,7 @@ class Api{
 
     getTheTrackedEntityAttributesPrograms = (programId) => {
        
-        return fetch(`${this.config.baseUrl}/programs/${programId}.json?fields=programTrackedEntityAttributes[id, displayName, valueType, program, trackedEntityAttribute[id]]`, {
+        return fetch(`${this.config.baseUrl}/programs/${programId}.json?fields=programTrackedEntityAttributes[id, displayName,displayShortName, valueType, program, trackedEntityAttribute[id]]`, {
             method: 'GET',
             mode: 'cors',
             credentials: 'include',
@@ -38,6 +38,17 @@ class Api{
             .then(response => response.json());
     };
     
+    getOptionSets = ()=>{
+        return fetch(`${this.config.baseUrl}/${url}`, {
+            method: 'GET',
+            mode: 'cors',
+            credentials: 'include',
+            headers,
+        })
+            .catch(error => error)
+            .then(response => response.json());
+    }
+
     getTheDataElementsGroup = () => {
        
         return fetch(`${this.config.baseUrl}/dataElementGroups/BM3U6ZvyJoz.json?fields=dataElements[id,name,formName, valueType]`, {

@@ -9,41 +9,62 @@ export default class ReceivingForm extends React.Component{
         state = {
             formDataElements:[],
             trackedEntityAttributes: [],
-            dataValues:{},
             programs: [],
+            programOption:[],
+            optiondisplayname: "",
             programId:"xWB78Xl4SV0",
-            loading: true
+            loading: true,
+            client_name:"", client_phone_number:"", batch_number:"", poultry_specie:""
         }
 
     componentDidMount(){
         this.submitForm()
         this.getPrograms()
         this.getTrackedPrograms()
+        this.getOptions()
     }
     
 
     getPrograms = () =>{
         Api.getTheTrackedEntityAttributesPrograms(this.state.programId).then(data=>{
-            let ff = ""
             this.setState({trackedEntityAttributes: data.programTrackedEntityAttributes,
                  loading: false})
             
         })
     }
+    getOptions = () =>{
+        Api.getOptionSets().then(option =>{
+            
+            this.setState({programOption : option.options, optiondisplayname : option.displayName})
+        })
+    }
+
     getTrackedPrograms = () =>{
         Api.getTheTrackedEntityPrograms().then(data=>{
             this.setState({programs : data.programs, loading : false})
         })
     }
     
-    submitForm =(event)=>{
-        
-        console.log(this.state.dataValues);
+    submitForm =()=>{
+        let {batch_number, client_name, client_phone_number, poultry_specie} = this.state
+        let payload = {
+            batch_number,
+            client_name, 
+            client_phone_number,
+            poultry_specie
+        }
+        console.log(payload);
     }
 
     submitToRecieving =(event)=>{
-        this.setState({dataValues: event.target.value})
+        
+        this.setState({
+            [event.target.name] : event.target.value
+        })
+
     }
+
+
 
     setProgramId = (event) =>{
         this.setState({programId : event.target.value })
@@ -53,22 +74,37 @@ export default class ReceivingForm extends React.Component{
         let tracked = this.state.trackedEntityAttributes
         let forms =()=>{
            return tracked.map((entity, key)=>{
-               
+              
                 if (entity.valueType.toLowerCase()==="integer") {
                     return (
                         <div className="mb-3" key={key}>
                            
-                            
-                            <input type="number" className="form-control" id={entity.trackedEntityAttribute.id} aria-describedby={entity.displayName} placeholder={entity.displayName} onChange={this.submitToRecieving}/>
+                            <input type="number" name={entity.displayShortName.toLowerCase().split(" ")[2]} className="form-control" 
+                            id={entity.trackedEntityAttribute.id} aria-describedby={entity.displayName} placeholder={entity.displayName} 
+                            onChange={this.submitToRecieving}/>
                             
                         </div>
                     )
-                }else if(entity.valueType.toLowerCase() === "phone_number"){
+                }else
+                 if(entity.trackedEntityAttribute.id === "ltJO9UJSMFQ"){
+                    return (
+                        <>
+                    <select class="form-select" name={this.state.optiondisplayname.toLowerCase().split(" ")[0]+"_"+this.state.optiondisplayname.toLowerCase().split(" ")[1]} aria-label="Default select example" onChange={this.submitToRecieving}>
+                    {
+                       this.state.programOption.map((opt, key)=>{
+                        return <option value={opt.id}>{opt.name}</option>
+                       })
+                    }
+                        
+                </select><br/></>)
+                
+                }
+                if(entity.valueType.toLowerCase() === "phone_number"){
                     return (
                         <div className="mb-3" key={key}>
                            
                             
-                            <input type="number" className="form-control" id={entity.trackedEntityAttribute.id} aria-describedby={entity.displayName}
+                            <input type="number" name={entity.displayShortName.toLowerCase().split(" ")[2]}  className="form-control" id={entity.trackedEntityAttribute.id} aria-describedby={entity.displayName}
                              placeholder={entity.displayName} onChange={this.submitToRecieving}/>
                             
                         </div>
@@ -76,7 +112,7 @@ export default class ReceivingForm extends React.Component{
                 }else{
                     return (
                         <div className="mb-3" key={key}>
-                            <input type={entity.valueType.toLowerCase()} className="form-control" id={entity.trackedEntityAttribute.id}
+                            <input type={entity.valueType.toLowerCase()} name={entity.displayShortName.toLowerCase().split(" ")[2]} className="form-control" id={entity.trackedEntityAttribute.id}
                              aria-describedby={entity.displayName} placeholder={entity.displayName} onChange={this.submitToRecieving}/>
                         </div>
                     )
