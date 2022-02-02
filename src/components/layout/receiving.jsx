@@ -10,15 +10,16 @@ export default class ReceivingForm extends React.Component{
             formDataElements:[],
             trackedEntityAttributes: [],
             programs: [],
+            trackedEntityId: "",
             programOption:[],
             optiondisplayname: "",
             programId:"xWB78Xl4SV0",
+            orgUnit: "",
             loading: true,
             client_name:"", client_phone_number:"", batch_number:"", poultry_specie:""
         }
 
     componentDidMount(){
-        this.submitForm()
         this.getPrograms()
         this.getTrackedPrograms()
         this.getOptions()
@@ -27,7 +28,8 @@ export default class ReceivingForm extends React.Component{
 
     getPrograms = () =>{
         Api.getTheTrackedEntityAttributesPrograms(this.state.programId).then(data=>{
-            this.setState({trackedEntityAttributes: data.programTrackedEntityAttributes,
+            
+            this.setState({trackedEntityAttributes: data.programTrackedEntityAttributes, trackedEntityId: data.trackedEntityType.id, orgUnit : data.organisationUnits.id,
                  loading: false})
             
         })
@@ -47,13 +49,36 @@ export default class ReceivingForm extends React.Component{
     
     submitForm =()=>{
         let {batch_number, client_name, client_phone_number, poultry_specie} = this.state
-        let payload = {
-            batch_number,
-            client_name, 
-            client_phone_number,
-            poultry_specie
+        let payload = [
+            {
+                "attribute": "cvV5KiMk0Ca",
+                "value": batch_number
+                },
+                {
+                    "attribute": "ivAG6QfkXL7",
+                    "value": client_name
+                    },
+                    {
+                        "attribute": "CxITRqmVR3C",
+                        "value": client_phone_number
+                        },
+                        {
+                            "attribute": "ovoWoGVrKsz",
+                            "value": poultry_specie
+                            },
+            {
         }
-        console.log(payload);
+    ]
+
+           let final_payload = {
+            "trackedEntityType": "WDrFlbWCPBQ",
+            "orgUnit": "wKFFg76w4Wf",
+            "attributes": payload
+            }
+        Api.postTrackerEntity(final_payload).then(res=>{
+            console.log(res);
+        })
+    
     }
 
     submitToRecieving =(event)=>{
@@ -92,7 +117,7 @@ export default class ReceivingForm extends React.Component{
                     <select class="form-select" name={this.state.optiondisplayname.toLowerCase().split(" ")[0]+"_"+this.state.optiondisplayname.toLowerCase().split(" ")[1]} aria-label="Default select example" onChange={this.submitToRecieving}>
                     {
                        this.state.programOption.map((opt, key)=>{
-                        return <option value={opt.id}>{opt.name}</option>
+                        return <option value={opt.name}>{opt.name}</option>
                        })
                     }
                         

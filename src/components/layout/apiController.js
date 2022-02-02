@@ -17,7 +17,7 @@ class Api{
 
     getTheTrackedEntityAttributesPrograms = (programId) => {
        
-        return fetch(`${this.config.baseUrl}/programs/${programId}.json?fields=programTrackedEntityAttributes[id, displayName,displayShortName, valueType, program, trackedEntityAttribute[id]]`, {
+        return fetch(`${this.config.baseUrl}/programs/${programId}.json?fields=trackedEntityType[id],organisationUnits[id],programTrackedEntityAttributes[id, displayName,displayShortName, valueType, program, trackedEntityAttribute[id]]`, {
             method: 'GET',
             mode: 'cors',
             credentials: 'include',
@@ -60,6 +60,20 @@ class Api{
             .catch(error => error)
             .then(response => response.json());
     };
+
+    postTrackerEntity = (data) => {
+       
+        return fetch(`${this.config.baseUrl}/trackedEntityInstances`, {
+            method: 'POST',
+            mode: 'cors',
+            credentials: 'include',
+            headers,
+            body: JSON.stringify(data)
+        })
+            .catch(error => error)
+            .then(response => response.json());
+    };
+
 
 }
 export default new Api();
