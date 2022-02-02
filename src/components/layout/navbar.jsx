@@ -10,8 +10,11 @@ export default class Navbar extends Component {
                     <a className="navbar-brand" style={{color:"whitesmoke"}}>Poultry Information Management System</a>
 
                     <div className="d-flex">
+
                           <OverlayTrigger placement="left-start" overlay={<Tooltip id="tooltip-disabled" >Admin</Tooltip>}>
                             <span className="d-inline-block">
+                          <span class="badge poststatus">Post Results</span>
+
                               <span  className="btn bg_color position-relative" style={{marginRight:"10px"}}>
                                 <FaIcons.FaUserCircle/>
 

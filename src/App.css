@@ -80,3 +80,6 @@
 .height-css{
   height: 100vh;
 }
+.poststatus{
+  visibility: hidden;
+}

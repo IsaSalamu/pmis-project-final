@@ -16,17 +16,18 @@ export default class ReceivingForm extends React.Component{
             programId:"xWB78Xl4SV0",
             orgUnit: "",
             loading: true,
+            // initialising all form fileds for trackedEntityAttributes
             client_name:"", client_phone_number:"", batch_number:"", poultry_specie:""
         }
 
     componentDidMount(){
-        this.getPrograms()
+        this.getTrackedEntityAttributesPrograms()
         this.getTrackedPrograms()
         this.getOptions()
     }
     
-
-    getPrograms = () =>{
+// requesting all tracked entities under the current/selected program tracker
+    getTrackedEntityAttributesPrograms = () =>{
         Api.getTheTrackedEntityAttributesPrograms(this.state.programId).then(data=>{
             
             this.setState({trackedEntityAttributes: data.programTrackedEntityAttributes, trackedEntityId: data.trackedEntityType.id, orgUnit : data.organisationUnits.id,
@@ -34,59 +35,61 @@ export default class ReceivingForm extends React.Component{
             
         })
     }
+    // getting options from option-set so that we display type of birds
     getOptions = () =>{
         Api.getOptionSets().then(option =>{
             
             this.setState({programOption : option.options, optiondisplayname : option.displayName})
         })
     }
-
+// getting all tracker programms to be assigned in the options menu
     getTrackedPrograms = () =>{
         Api.getTheTrackedEntityPrograms().then(data=>{
             this.setState({programs : data.programs, loading : false})
         })
     }
-    
+
+    // getting today's date to be used as an enrollment and incident date
+    getTodaysDate =() =>{
+        let today = new Date();
+        let date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
+        return date;
+    }
+    // send the payload(tracked entity instance and the enrollment) to the server
     submitForm =()=>{
         let {batch_number, client_name, client_phone_number, poultry_specie} = this.state
-        let payload = [
-            {
-                "attribute": "cvV5KiMk0Ca",
-                "value": batch_number
-                },
-                {
-                    "attribute": "ivAG6QfkXL7",
-                    "value": client_name
-                    },
-                    {
-                        "attribute": "CxITRqmVR3C",
-                        "value": client_phone_number
-                        },
-                        {
-                            "attribute": "ovoWoGVrKsz",
-                            "value": poultry_specie
-                            },
-            {
-        }
-    ]
+        
+        let payload = [ batch_number,poultry_specie, client_name, client_phone_number]
+        let enroll = [{
+                "orgUnit":"wKFFg76w4Wf",
+                "program":"xWB78Xl4SV0",
+                "enrollmentDate":this.getTodaysDate(),
+                "incidentDate": this.getTodaysDate()
+                }]
 
            let final_payload = {
-            "trackedEntityType": "WDrFlbWCPBQ",
+            "trackedEntityType": this.state.trackedEntityId,
             "orgUnit": "wKFFg76w4Wf",
-            "attributes": payload
+            "attributes": payload,
+            "enrollments": enroll
             }
+            
         Api.postTrackerEntity(final_payload).then(res=>{
-            console.log(res);
+            if (res.httpStatusCode === 200 ) {
+                <ThreeDots color="#00BFFF" height={80} width={80}/>
+                alert(res.message+"\n"+res.response.importSummaries[0].importCount.imported +" payload has been uploaded!")
+            }else{
+                alert("Error occured!")
+                console.log(res);
+            }
         })
     
     }
 
     submitToRecieving =(event)=>{
-        
         this.setState({
-            [event.target.name] : event.target.value
+            [event.target.name] : {"attribute":event.target.id,"value":event.target.value}
         })
-
     }
 
 
@@ -106,7 +109,7 @@ export default class ReceivingForm extends React.Component{
                            
                             <input type="number" name={entity.displayShortName.toLowerCase().split(" ")[2]} className="form-control" 
                             id={entity.trackedEntityAttribute.id} aria-describedby={entity.displayName} placeholder={entity.displayName} 
-                            onChange={this.submitToRecieving}/>
+                            onChange={this.submitToRecieving} required/>
                             
                         </div>
                     )
@@ -114,7 +117,7 @@ export default class ReceivingForm extends React.Component{
                  if(entity.trackedEntityAttribute.id === "ltJO9UJSMFQ"){
                     return (
                         <>
-                    <select class="form-select" name={this.state.optiondisplayname.toLowerCase().split(" ")[0]+"_"+this.state.optiondisplayname.toLowerCase().split(" ")[1]} aria-label="Default select example" onChange={this.submitToRecieving}>
+                    <select class="form-select" id={entity.trackedEntityAttribute.id} name={this.state.optiondisplayname.toLowerCase().split(" ")[0]+"_"+this.state.optiondisplayname.toLowerCase().split(" ")[1]} aria-label="Default select example" onChange={this.submitToRecieving}>
                     {
                        this.state.programOption.map((opt, key)=>{
                         return <option value={opt.name}>{opt.name}</option>
@@ -130,7 +133,7 @@ export default class ReceivingForm extends React.Component{
                            
                             
                             <input type="number" name={entity.displayShortName.toLowerCase().split(" ")[2]}  className="form-control" id={entity.trackedEntityAttribute.id} aria-describedby={entity.displayName}
-                             placeholder={entity.displayName} onChange={this.submitToRecieving}/>
+                             placeholder={entity.displayName} onChange={this.submitToRecieving} required/>
                             
                         </div>
                     )
@@ -138,7 +141,7 @@ export default class ReceivingForm extends React.Component{
                     return (
                         <div className="mb-3" key={key}>
                             <input type={entity.valueType.toLowerCase()} name={entity.displayShortName.toLowerCase().split(" ")[2]} className="form-control" id={entity.trackedEntityAttribute.id}
-                             aria-describedby={entity.displayName} placeholder={entity.displayName} onChange={this.submitToRecieving}/>
+                             aria-describedby={entity.displayName} placeholder={entity.displayName} onChange={this.submitToRecieving} required/>
                         </div>
                     )
                 }
@@ -151,10 +154,10 @@ export default class ReceivingForm extends React.Component{
             return (this.state.loading?<ThreeDots color="#00BFFF" height={80} width={80} /> :<div className='row'>
                 <div className='col-md-6'>
                     <button type='button' className='form-control btn-info' style={{color:"whitesmoke"}}
-                     onClick={this.submitForm}>Save and continue</button>
+                     >Save and continue</button>
                 </div>
                 <div className='col-md-6'>
-                    <button type='button' className='form-control btn-info' style={{color:"whitesmoke"}}>Save and add New</button>
+                    <button type='button' className='form-control btn-info' style={{color:"whitesmoke"}} onClick={this.submitForm}>Save and add New</button>
                 </div>
 
         </div>     )
