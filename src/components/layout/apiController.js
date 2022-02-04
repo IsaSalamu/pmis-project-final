@@ -6,6 +6,7 @@ const headers = new Headers({
     Accept: 'application/json',
 });
 const url = "/optionSets/KooURD3UkQb.json?fields=displayName,options[id,name]"
+const options_url = "/optionSets/yjWGG3ncKUp.json?fields=displayName,options[id,name]"
 class Api{
     config = {
         baseUrl: 'https://176.57.184.192/demo/api/29',
@@ -17,7 +18,7 @@ class Api{
 
     getTheTrackedEntityAttributesPrograms = (programId) => {
        
-        return fetch(`${this.config.baseUrl}/programs/${programId}.json?fields=trackedEntityType[id],organisationUnits[id],programTrackedEntityAttributes[id, displayName,displayShortName, valueType, program, trackedEntityAttribute[id]]`, {
+        return fetch(`${this.config.baseUrl}/programs/${programId}.json?fields=trackedEntityType[id],organisationUnits[id],programTrackedEntityAttributes[id, displayName,displayShortName, valueType, program, trackedEntityAttribute[id]],programStages[id]`, {
             method: 'GET',
             mode: 'cors',
             credentials: 'include',
@@ -40,6 +41,17 @@ class Api{
     
     getOptionSets = ()=>{
         return fetch(`${this.config.baseUrl}/${url}`, {
+            method: 'GET',
+            mode: 'cors',
+            credentials: 'include',
+            headers,
+        })
+            .catch(error => error)
+            .then(response => response.json());
+    }
+
+    getOptionSetsIncubators = ()=>{
+        return fetch(`${this.config.baseUrl}/${options_url}`, {
             method: 'GET',
             mode: 'cors',
             credentials: 'include',

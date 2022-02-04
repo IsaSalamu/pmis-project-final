@@ -7,23 +7,29 @@ import { ThreeDots } from 'react-loader-spinner'
 export default class ReceivingForm extends React.Component{
 
         state = {
+            program_stages : [],
             formDataElements:[],
             trackedEntityAttributes: [],
             programs: [],
             trackedEntityId: "",
             programOption:[],
             optiondisplayname: "",
+            incubatorOptionDisplayname:"",
             programId:"xWB78Xl4SV0",
             orgUnit: "",
+            incubatoroptions:[],
             loading: true,
+
             // initialising all form fileds for trackedEntityAttributes
-            client_name:"", client_phone_number:"", batch_number:"", poultry_specie:""
+            client_name:"", client_phone_number:"", incubator_numbers:"", poultry_specie:""
         }
 
     componentDidMount(){
         this.getTrackedEntityAttributesPrograms()
         this.getTrackedPrograms()
         this.getOptions()
+        this.getIncubatorOptions()
+        this.programStageFunction()
     }
     
 // requesting all tracked entities under the current/selected program tracker
@@ -35,11 +41,18 @@ export default class ReceivingForm extends React.Component{
             
         })
     }
+
     // getting options from option-set so that we display type of birds
     getOptions = () =>{
         Api.getOptionSets().then(option =>{
             
             this.setState({programOption : option.options, optiondisplayname : option.displayName})
+        })
+    }
+    getIncubatorOptions =()=>{
+        Api.getOptionSetsIncubators().then(incubatorOption=>{
+            // console.log(incubatorOption.options);
+            this.setState({incubatoroptions: incubatorOption.options, incubatorOptionDisplayname : incubatorOption.displayName})
         })
     }
 // getting all tracker programms to be assigned in the options menu
@@ -55,11 +68,33 @@ export default class ReceivingForm extends React.Component{
         let date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
         return date;
     }
+
+    programStageFunction(){
+        let stages = []
+        let pStages = []
+        Api.getTheTrackedEntityAttributesPrograms().then(programStages =>{
+            stages = programStages.programStages
+        })
+
+        stages.map(stage =>{
+           return pStages.push({
+                "program":"xWB78Xl4SV0",
+                "orgUnit":"wKFFg76w4Wf",
+                "eventDate":this.getTodaysDate(),
+                "programStage":stage.id,
+            })
+        })
+       return this.setState({program_stages: pStages})
+        
+
+    }
     // send the payload(tracked entity instance and the enrollment) to the server
     submitForm =()=>{
-        let {batch_number, client_name, client_phone_number, poultry_specie} = this.state
         
-        let payload = [ batch_number,poultry_specie, client_name, client_phone_number]
+        console.log(this.state.program_stages);
+        let {incubator_numbers, client_name, client_phone_number, poultry_specie} = this.state
+        
+        let payload = [ incubator_numbers,poultry_specie, client_name, client_phone_number]
         let enroll = [{
                 "orgUnit":"wKFFg76w4Wf",
                 "program":"xWB78Xl4SV0",
@@ -71,12 +106,13 @@ export default class ReceivingForm extends React.Component{
             "trackedEntityType": this.state.trackedEntityId,
             "orgUnit": "wKFFg76w4Wf",
             "attributes": payload,
-            "enrollments": enroll
+            "enrollments": enroll,
+            "events": this.state.program_stages
             }
             
         Api.postTrackerEntity(final_payload).then(res=>{
             if (res.httpStatusCode === 200 ) {
-                <ThreeDots color="#00BFFF" height={80} width={80}/>
+                
                 alert(res.message+"\n"+res.response.importSummaries[0].importCount.imported +" payload has been uploaded!")
             }else{
                 alert("Error occured!")
@@ -103,24 +139,35 @@ export default class ReceivingForm extends React.Component{
         let forms =()=>{
            return tracked.map((entity, key)=>{
               
-                if (entity.valueType.toLowerCase()==="integer") {
-                    return (
-                        <div className="mb-3" key={key}>
-                           
-                            <input type="number" name={entity.displayShortName.toLowerCase().split(" ")[2]} className="form-control" 
-                            id={entity.trackedEntityAttribute.id} aria-describedby={entity.displayName} placeholder={entity.displayName} 
-                            onChange={this.submitToRecieving} required/>
-                            
-                        </div>
-                    )
-                }else
-                 if(entity.trackedEntityAttribute.id === "ltJO9UJSMFQ"){
+                if (entity.trackedEntityAttribute.id === "n6tzsG2QpJY") {
                     return (
                         <>
+
+                        <select class="form-select" id={entity.trackedEntityAttribute.id} name={this.state.incubatorOptionDisplayname.toLowerCase().split(" ")[0]+"_"+this.state.incubatorOptionDisplayname.toLowerCase().split(" ")[1]} aria-label="Batch number" onChange={this.submitToRecieving}>
+                        {
+                           this.state.incubatoroptions.map((optio, key)=>{
+                            return <option value={optio.name}>
+
+                                        {optio.name}
+                            
+                                    </option>
+                           })
+                        }
+                            
+                    </select><br/></>
+                                )
+                            }else
+                            if(entity.trackedEntityAttribute.id === "ltJO9UJSMFQ"){
+                                return (
+                                    <>
+
                     <select class="form-select" id={entity.trackedEntityAttribute.id} name={this.state.optiondisplayname.toLowerCase().split(" ")[0]+"_"+this.state.optiondisplayname.toLowerCase().split(" ")[1]} aria-label="Default select example" onChange={this.submitToRecieving}>
                     {
                        this.state.programOption.map((opt, key)=>{
-                        return <option value={opt.name}>{opt.name}</option>
+                        return <option 
+                                value={opt.name}>{opt.name}
+                        
+                        </option>
                        })
                     }
                         
@@ -129,11 +176,9 @@ export default class ReceivingForm extends React.Component{
                 }
                 if(entity.valueType.toLowerCase() === "phone_number"){
                     return (
-                        <div className="mb-3" key={key}>
-                           
-                            
+                        <div className="mb-3" key={key}>  
                             <input type="number" name={entity.displayShortName.toLowerCase().split(" ")[2]}  className="form-control" id={entity.trackedEntityAttribute.id} aria-describedby={entity.displayName}
-                             placeholder={entity.displayName} onChange={this.submitToRecieving} required/>
+                             placeholder={entity.displayName} onChange={this.submitToRecieving} min={0}/>
                             
                         </div>
                     )
@@ -144,10 +189,7 @@ export default class ReceivingForm extends React.Component{
                              aria-describedby={entity.displayName} placeholder={entity.displayName} onChange={this.submitToRecieving} required/>
                         </div>
                     )
-                }
-               
-               
-              
+                } 
             })
         }
         let loadingFunction = ()=>{
