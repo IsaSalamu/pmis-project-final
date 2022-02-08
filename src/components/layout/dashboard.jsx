@@ -4,14 +4,18 @@ import MortalityChart from '../charts/MortalityChart'
 import UpcomingEvents from '../charts/upcomingEvents'
 import VaccinationChart from '../charts/vaccinationChart'
 import WaterChart from '../charts/waterChart'
+import UploadFile from './uploadFile'
 
 
 export default class Dashboard extends Component {
     render() {
         return (
             <div>
-              <div className="">
-                <div className="row">
+                <br/>
+              <div className="row">
+                  
+                  <div className='col-md-12'>
+                  <div className="row">
                     
                     <div className="col-sm-12">
 
@@ -52,7 +56,9 @@ export default class Dashboard extends Component {
                     </div>
 
                 </div>
-                </div>
+                
+                  </div>
+                                </div>
             </div>
         )
     }

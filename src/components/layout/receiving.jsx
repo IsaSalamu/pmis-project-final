@@ -1,251 +1,334 @@
-
-import React  from 'react'
+import React, { Component } from 'react'
+import { Table, Modal, Button } from 'react-bootstrap'
+import * as FaIcons from 'react-icons/fa'
 import Api from './apiController'
-import { ThreeDots } from 'react-loader-spinner'
-
-
-export default class ReceivingForm extends React.Component{
-
-        state = {
-            program_stages : [],
-            formDataElements:[],
-            trackedEntityAttributes: [],
-            programs: [],
-            trackedEntityId: "",
-            programOption:[],
-            optiondisplayname: "",
-            incubatorOptionDisplayname:"",
-            programId:"xWB78Xl4SV0",
-            orgUnit: "",
-            incubatoroptions:[],
-            loading: true,
-
-            // initialising all form fileds for trackedEntityAttributes
-            client_name:"", client_phone_number:"", incubator_numbers:"", poultry_specie:""
-        }
-
-    componentDidMount(){
-        this.getTrackedEntityAttributesPrograms()
-        this.getTrackedPrograms()
-        this.getOptions()
-        this.getIncubatorOptions()
-        this.programStageFunction()
-    }
-    
-// requesting all tracked entities under the current/selected program tracker
-    getTrackedEntityAttributesPrograms = () =>{
-        Api.getTheTrackedEntityAttributesPrograms(this.state.programId).then(data=>{
-            
-            this.setState({trackedEntityAttributes: data.programTrackedEntityAttributes, trackedEntityId: data.trackedEntityType.id, orgUnit : data.organisationUnits.id,
-                 loading: false})
-            
-        })
+import CSVReader from 'react-csv-reader'
+export default class Receiving extends Component {
+  constructor(props) {
+    super(props)
+    this.state={
+      show: false,
+      data: [],
+      formProgramStageDataElements:[],
+      program: "",
+      orgUnit:"",
+      programStage:"",
+      setter_number:"",number_of_eggs_set_in_hatchery:""
     }
 
-    // getting options from option-set so that we display type of birds
-    getOptions = () =>{
-        Api.getOptionSets().then(option =>{
-            
-            this.setState({programOption : option.options, optiondisplayname : option.displayName})
-        })
-    }
-    getIncubatorOptions =()=>{
-        Api.getOptionSetsIncubators().then(incubatorOption=>{
-            // console.log(incubatorOption.options);
-            this.setState({incubatoroptions: incubatorOption.options, incubatorOptionDisplayname : incubatorOption.displayName})
-        })
-    }
-// getting all tracker programms to be assigned in the options menu
-    getTrackedPrograms = () =>{
-        Api.getTheTrackedEntityPrograms().then(data=>{
-            this.setState({programs : data.programs, loading : false})
-        })
-    }
+  }
+  componentDidMount(){
+    this.getProgramStageDataElements()
+    // this.handleSave()
+  }
 
-    // getting today's date to be used as an enrollment and incident date
-    getTodaysDate =() =>{
-        let today = new Date();
-        let date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
-        return date;
-    }
+  handleShow = () =>{
+    this.setState({show : true})
+  }
 
-    programStageFunction(){
-        let stages = []
-        let pStages = []
-        Api.getTheTrackedEntityAttributesPrograms().then(programStages =>{
-            stages = programStages.programStages
-        })
+  getTodaysDate =() =>{
+    let today = new Date();
+    let date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
+    return date;
+}
 
-        stages.map(stage =>{
-           return pStages.push({
-                "program":"xWB78Xl4SV0",
-                "orgUnit":"wKFFg76w4Wf",
-                "eventDate":this.getTodaysDate(),
-                "programStage":stage.id,
-            })
-        })
-       return this.setState({program_stages: pStages})
-        
+handleClose = () =>{
+  this.setState({show : false})
+}
 
-    }
-    // send the payload(tracked entity instance and the enrollment) to the server
-    submitForm =()=>{
-        
-        console.log(this.state.program_stages);
-        let {incubator_numbers, client_name, client_phone_number, poultry_specie} = this.state
-        
-        let payload = [ incubator_numbers,poultry_specie, client_name, client_phone_number]
-        let enroll = [{
-                "orgUnit":"wKFFg76w4Wf",
-                "program":"xWB78Xl4SV0",
-                "enrollmentDate":this.getTodaysDate(),
-                "incidentDate": this.getTodaysDate()
-                }]
+handleSave = () =>{
+  let {setter_number, number_of_eggs_set_in_hatchery} = this.state
+  let payload = [setter_number, number_of_eggs_set_in_hatchery]
+  console.log(payload);
+  let events = [
+    {
+      "program":"xWB78Xl4SV0",
+      "orgUnit":"wKFFg76w4Wf",
+      "eventDate": this.getTodaysDate(),
+      "programStage": "BqPkDKSL8sS",
+      "dataValues": payload
+    }]
+    Api.postTrackerEntityDataElements(events).then(res=>{
+      console.log(res);
+    })
+}
+getProgramStageDataElements = ()=>{
+  Api.getProgramStagesAndDataElements().then(programstages_DataElemets=>{
+      // console.log(programstages_DataElemets.programStages);
+      this.setState({
+          formProgramStageDataElements: programstages_DataElemets.programStages,
+          program : programstages_DataElemets.id,
+          orgUnit:programstages_DataElemets.organisationUnits[0].id,
+          programStage : programstages_DataElemets.programStages[0].id
+      })
+  })
+}
 
-           let final_payload = {
-            "trackedEntityType": this.state.trackedEntityId,
-            "orgUnit": "wKFFg76w4Wf",
-            "attributes": payload,
-            "enrollments": enroll,
-            "events": this.state.program_stages
-            }
-            
-        Api.postTrackerEntity(final_payload).then(res=>{
-            if (res.httpStatusCode === 200 ) {
-                
-                alert(res.message+"\n"+res.response.importSummaries[0].importCount.imported +" payload has been uploaded!")
-            }else{
-                alert("Error occured!")
-                console.log(res);
-            }
-        })
-    
-    }
+saveDataElements =(event)=>{
 
-    submitToRecieving =(event)=>{
-        this.setState({
-            [event.target.name] : {"attribute":event.target.id,"value":event.target.value}
-        })
-    }
-
-
-
-    setProgramId = (event) =>{
-        this.setState({programId : event.target.value })
-    }
-
-    render(){
-        let tracked = this.state.trackedEntityAttributes
+          this.setState({
+              [event.target.name] : {"dataElement":event.target.id, "value":event.target.value}
+          })
+      
+}
+    render() {
+      let progrmStagesData = this.state.formProgramStageDataElements
         let forms =()=>{
-           return tracked.map((entity, key)=>{
-              
-                if (entity.trackedEntityAttribute.id === "n6tzsG2QpJY") {
-                    return (
-                        <>
-
-                        <select class="form-select" id={entity.trackedEntityAttribute.id} name={this.state.incubatorOptionDisplayname.toLowerCase().split(" ")[0]+"_"+this.state.incubatorOptionDisplayname.toLowerCase().split(" ")[1]} aria-label="Batch number" onChange={this.submitToRecieving}>
-                        {
-                           this.state.incubatoroptions.map((optio, key)=>{
-                            return <option value={optio.name}>
-
-                                        {optio.name}
-                            
-                                    </option>
-                           })
-                        }
-                            
-                    </select><br/></>
-                                )
-                            }else
-                            if(entity.trackedEntityAttribute.id === "ltJO9UJSMFQ"){
-                                return (
-                                    <>
-
-                    <select class="form-select" id={entity.trackedEntityAttribute.id} name={this.state.optiondisplayname.toLowerCase().split(" ")[0]+"_"+this.state.optiondisplayname.toLowerCase().split(" ")[1]} aria-label="Default select example" onChange={this.submitToRecieving}>
-                    {
-                       this.state.programOption.map((opt, key)=>{
-                        return <option 
-                                value={opt.name}>{opt.name}
-                        
-                        </option>
-                       })
-                    }
-                        
-                </select><br/></>)
-                
-                }
-                if(entity.valueType.toLowerCase() === "phone_number"){
-                    return (
-                        <div className="mb-3" key={key}>  
-                            <input type="number" name={entity.displayShortName.toLowerCase().split(" ")[2]}  className="form-control" id={entity.trackedEntityAttribute.id} aria-describedby={entity.displayName}
-                             placeholder={entity.displayName} onChange={this.submitToRecieving} min={0}/>
-                            
-                        </div>
-                    )
-                }else{
-                    return (
+           return progrmStagesData.map((pg, key)=>{
+                if (pg.id==="BqPkDKSL8sS") {
+                   return pg.programStageDataElements.map((de, key)=>{
+                        return (
                         <div className="mb-3" key={key}>
-                            <input type={entity.valueType.toLowerCase()} name={entity.displayShortName.toLowerCase().split(" ")[2]} className="form-control" id={entity.trackedEntityAttribute.id}
-                             aria-describedby={entity.displayName} placeholder={entity.displayName} onChange={this.submitToRecieving} required/>
+                        
+                            <input type={de.dataElement.valueType.toLowerCase()} className="form-control" name={de.dataElement.name.toLowerCase().split("h-")[1].replace(/\s/g,'_')} id={de.dataElement.id} aria-describedby={de.dataElement.name} placeholder={de.dataElement.name} onChange={this.saveDataElements} />
+                            
                         </div>
                     )
-                } 
-            })
+                   })
+               }
+           })
         }
-        let loadingFunction = ()=>{
-            return (this.state.loading?<ThreeDots color="#00BFFF" height={80} width={80} /> :<div className='row'>
-                <div className='col-md-6'>
-                    <button type='button' className='form-control btn-info' style={{color:"whitesmoke"}}
-                     >Save and continue</button>
-                </div>
-                <div className='col-md-6'>
-                    <button type='button' className='form-control btn-info' style={{color:"whitesmoke"}} onClick={this.submitForm}>Save and add New</button>
-                </div>
-
-        </div>     )
-        }
-        let entityPrograms = ()=>{
-            return(this.state.loading?<option>Tracker Programs</option>: this.state.programs.map((program, key)=>{
-                return <option value={program.id}>{program.displayName}</option>
-                
-                }))
-        }
-        
-        return(
-            <>
-                <div className='row'>
+        return (
+            <div>
+              <br/>
+              <br/>
+              <br/>
+                <div className="row">
+                    <div className="col-sm-12" style={{textAlign:"center"}}>
+                    <div className='row'>
                 <div className='col-md-4'></div>
-                <div className='col-md-4'>
-                <select class="form-select" aria-label="Default select example" onChange={this.setProgramId}>
-                    {
-                        entityPrograms()
-                    }
-                        
-                </select>
+                <div className='col-md-2'>
+                <div className="btn-group" role="group" aria-label="Basic checkbox toggle button group" style={{marginBottom:"10px"}}>
+                <input type="button" className="btn-check" id="btncheck1" autocomplete="off"/>
+                <label className="btn btn-outline-primary" for="btncheck1" onClick={this.handleShow}>
+                    <FaIcons.FaPlus/> New
+                    
+                </label>
+
+                </div>
+                </div>
+                <div className='col-md-2'>
+               
+                <CSVReader onFileLoaded={(data)=> this.dataHndler(data.slice(1), data[0])}/>
+
                 </div>
                 <div className='col-md-4'></div>
-                </div>
-                <br/>
-                <div className='row'>
-                    <div className='col-md-3'></div>
-                    <div className='col-md-6'>
-                    <form>
-                        {
-                            forms()
-                        }
 
-                        {
-                            loadingFunction()
-                        }
-                        </form>
-                    </div>
-                    <div className='col-md-3'></div>
-
+             </div>
                    
-              
+              <Modal show={this.state.show} aria-labelledby="contained-modal-title-vcenter" centered onHide={this.handleClose} backdropClassName='static'>
+                <Modal.Header closeButton>
+                  <Modal.Title>Hatchery Data Entry Form</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                 
+                 {
+                   forms()
+                 }
+
+                  </Modal.Body>
+                <Modal.Footer>
+                  <Button variant="secondary" onClick={this.handleClose}>
+                    Close
+                  </Button>
+                  <Button variant="primary" onClick={this.handleSave}>
+                    Save
+                  </Button>
+                </Modal.Footer>
+              </Modal>
+
+
+                    {/* <Table striped bordered hover size="sm"> */}
+  {/* <thead className="table table-primary">
+    <tr>
+      <th>Edit</th>
+      <th>Date of Entry</th>
+      <th>Offloading Date</th>
+      <th>Hatchery</th>
+      <th>No. of Eggs</th>
+      <th>Setter No.</th>
+      <th>Owner</th>
+      <th>Operator</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>
+          <FaIcons.FaEdit/>
+      </td>
+      <td>12/03/2021</td>
+      <td>30/03/2021</td>
+      <td>Long White</td>
+      <td>60</td>
+      <td>2</td>
+      <td>Mr Sadulo</td>
+      <td>Victor Khozi</td>
+    </tr>
+    <tr>
+      <td>
+      <FaIcons.FaEdit/>
+        
+      </td>
+      <td>11/03/2021</td>
+      <td>29/03/2021</td>
+      <td>Model</td>
+      <td>20</td>
+      <td>1</td>
+
+      <td>Edwin Gondwe</td>
+      <td>Issa Salamu</td>
+    </tr>
+    <tr>
+      <td>
+      <FaIcons.FaEdit/>
+          
+      </td>
+      <td>17/03/2021</td>
+      <td>05/04/2021</td>
+      <td>Long Brown</td>
+      <td>83</td>
+      <td>2</td>
+      <td>Mary JaFali</td>
+      <td>Victor Khozi</td>
+    </tr>
+
+    <tr>
+      <td>
+      <FaIcons.FaEdit/>
+          
+      </td>
+      <td>12/03/2021</td>
+      <td>30/03/2021</td>
+      <td>Long White</td>
+      <td>60</td>
+      <td>2</td>
+
+      <td>Mr Sadulo</td>
+      <td>Victor Khozi</td>
+    </tr>
+    <tr>
+      <td>
+      <FaIcons.FaEdit/>
+          
+      </td>
+      <td>11/03/2021</td>
+      <td>29/03/2021</td>
+      <td>Model</td>
+      <td>20</td>
+      <td>1</td>
+      
+      <td>Edwin Gondwe</td>
+      <td>Issa Salamu</td>
+    </tr>
+    <tr>
+      <td>
+      <FaIcons.FaEdit/>
+          
+      </td>
+      <td>17/03/2021</td>
+      <td>05/04/2021</td>
+      <td>Long Brown</td>
+      <td>83</td>
+      <td>3</td>
+
+      <td>Mary JaFali</td>
+      <td>Victor Khozi</td>
+    </tr>
+
+    <tr>
+      <td>
+      <FaIcons.FaEdit/>
+          
+      </td>
+      <td>12/03/2021</td>
+      <td>30/03/2021</td>
+      <td>Long White</td>
+      <td>60</td>
+      <td>3</td>
+
+      <td>Mr Sadulo</td>
+      <td>Victor Khozi</td>
+    </tr>
+    <tr>
+      <td>
+      <FaIcons.FaEdit/>
+          
+      </td>
+      <td>11/03/2021</td>
+      <td>29/03/2021</td>
+      <td>Model</td>
+      <td>20</td>
+      <td>1</td>
+
+      <td>Edwin Gondwe</td>
+      <td>Issa Salamu</td>
+    </tr>
+    <tr>
+      <td>
+      <FaIcons.FaEdit/>
+          
+      </td>
+      <td>17/03/2021</td>
+      <td>05/04/2021</td>
+      <td>Long Brown</td>
+      <td>83</td>
+      <td>1</td>
+
+      <td>Mary JaFali</td>
+      <td>Victor Khozi</td>
+    </tr>
+
+    <tr>
+      <td>
+      <FaIcons.FaEdit/>
+          
+      </td>
+      <td>12/03/2021</td>
+      <td>30/03/2021</td>
+      <td>Long White</td>
+      <td>60</td>
+      <td>2</td>
+
+      <td>Mr Sadulo</td>
+      <td>Victor Khozi</td>
+    </tr>
+    <tr>
+      <td>
+      <FaIcons.FaEdit/>
+          
+      </td>
+      <td>11/03/2021</td>
+      <td>29/03/2021</td>
+      <td>Model</td>
+      <td>20</td>
+      <td>3</td>
+
+      <td>Edwin Gondwe</td>
+      <td>Issa Salamu</td>
+    </tr>
+    <tr>
+      <td>
+      <FaIcons.FaEdit/>
+          
+      </td>
+      <td>17/03/2021</td>
+      <td>05/04/2021</td>
+      <td>Long Brown</td>
+      <td>83</td>
+      <td>2</td>
+
+      <td>Mary JaFali</td>
+      <td>Victor Khozi</td>
+    </tr>
+
+    
+  </tbody>
+</Table> */}
+                    </div>
+
                 </div>
-           
-            </>
+                
+            </div>
         )
     }
 }

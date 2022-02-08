@@ -5,7 +5,7 @@ export default class Navbar extends Component {
     render() {
         return (
             <div>
-              <nav className="navbar navbar-light bg_color">
+              <nav className="navbar navbar-light fixed-top bg_color">
                   <div className="container-fluid">
                     <a className="navbar-brand" style={{color:"whitesmoke"}}>Poultry Information Management System</a>
 

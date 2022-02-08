@@ -1,11 +1,11 @@
 import React, { Component } from 'react'
 import {Accordion,Tab, Row, Nav, Col} from 'react-bootstrap'
 import Dashboard from './dashboard'
-import FeedEntry from './FeedEntry'
+import FeedEntry from './receiving'
 import Vaccine from './candling'
 import StockData from './StockData'
 import FooterComponent from './footerComponent'
-import ReceivingForm from './receiving'
+import ReceivingForm from './registerCliet'
 
 
 export default class Layout extends Component {
@@ -22,17 +22,17 @@ export default class Layout extends Component {
 
           <Accordion defaultActiveKey="0">
               <Accordion.Item eventKey="0">
-                <Accordion.Header>Hatchery</Accordion.Header>
+                <Accordion.Header>Hatchery Information</Accordion.Header>
 
                   <Accordion.Body>
                     <Nav.Item>
 
-                      <Nav.Link eventKey="first">In Stock</Nav.Link>
+                      <Nav.Link eventKey="first">Receiving Eggs</Nav.Link>
                           </Nav.Item>   <Nav.Item>
-                      <Nav.Link eventKey="receive">Register</Nav.Link>
-                      <Nav.Link eventKey="collect">Collecting</Nav.Link>
+                      <Nav.Link eventKey="receive">Register Client</Nav.Link>
+                      <Nav.Link eventKey="collect">Collecting  By Client</Nav.Link>
                       
-                      <Nav.Link eventKey="vacci">Candling</Nav.Link>
+                      <Nav.Link eventKey="vacci">Candling Of Eggs</Nav.Link>
                         </Nav.Item>  <Nav.Item>
 
                          

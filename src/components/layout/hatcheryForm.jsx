@@ -1,81 +1,84 @@
 
 import React  from 'react'
 import Api from './apiController'
-
+import { Table, Modal, Button } from 'react-bootstrap'
 export default class HatcheryForm extends React.Component{
 
    
         state = {
-            formDataElements:[],
-            trackedEntityAttributes: [],
-            dataValues:[]
+            formProgramStageDataElements:[],
+            program: "",
+            orgUnit:"",
+            programStage:"",
+            dataValues:[],
+            setter_number:"",number_of_eggs_set_in_hatchery:""
         }
    
 
     componentDidMount(){
-        this.getDataElements()
-        this.submitForm()
-        this.getPrograms()
+        this.getProgramStageDataElements()
+        this.saveForm()
 
       
     }
 
-    getPrograms = () =>{
-        Api.getThePrograms().then(data=>{
-            this.setState({trackedEntityAttributes: data.programTrackedEntityAttributes})
-            console.log(data.programTrackedEntityAttributes);
-        })
-    }
-    submitForm =()=>{
-        this.setState({dataValues : this.props.data})
-       
-    }
-
-    getDataElements =()=>{
-        Api.getTheDataElementsGroup().then(dataElements =>{
-           
+    getProgramStageDataElements = ()=>{
+        Api.getProgramStagesAndDataElements().then(programstages_DataElemets=>{
+            console.log(programstages_DataElemets.programStages);
             this.setState({
-                formDataElements : dataElements.dataElements
+                formProgramStageDataElements: programstages_DataElemets.programStages,
+                program : programstages_DataElemets.id,
+                orgUnit:programstages_DataElemets.organisationUnits[0].id,
+                programStage : programstages_DataElemets.programStages[0].id
             })
         })
+    }
+    saveForm =()=>{
+        let {setter_number, number_of_eggs_set_in_hatchery} = this.state
+        let payload = [setter_number, number_of_eggs_set_in_hatchery]
+        
     }
     
-    submitToHatchery =(event)=>{
-        if (event.target.placeholder === "Date Entry") {
 
-                console.log(event.target.value);
+    saveDataElements =(event)=>{
+
+                this.setState({
+                    [event.target.name] : {"dataElement":event.target.id, "value":event.target.value}
+                })
             
-        }
-
     }
-    render(){
-        let tracked = this.state.trackedEntityAttributes
-        let forms =()=>{
-           return tracked.map((entity, key)=>{
 
-                return (
-                    <div className="mb-3" key={key}>
-                       
-                        <input type={entity.valueType.toLowerCase()} className="form-control" id={entity.id} aria-describedby={entity.displayName} placeholder={entity.displayName} onChange={this.submitToHatchery}/>
+    render(){
+        let progrmStagesData = this.state.formProgramStageDataElements
+        let forms =()=>{
+           return progrmStagesData.map((pg, key)=>{
+                if (pg.id==="BqPkDKSL8sS") {
+                   return pg.programStageDataElements.map((de, key)=>{
+                        return (
+                        <div className="mb-3" key={key}>
                         
-                    </div>
-                )
-               
-              
-            })
+                            <input type={de.dataElement.valueType.toLowerCase()} className="form-control" name={de.dataElement.name.toLowerCase().split("h-")[1].replace(/\s/g,'_')} id={de.dataElement.id} aria-describedby={de.dataElement.name} placeholder={de.dataElement.name} onChange={this.saveDataElements} />
+                            
+                        </div>
+                    )
+                   })
+               }
+           })
         }
         
-        
+       
         return(
             <>
                 <div className=''>
                 
                     <form>
-                        {/* {
+                        {
                             forms()
-                        } */}
+                        }
                 
-    
+                        <Button variant="primary" onClick={this.handleSave}>
+                            Save
+                        </Button>
                         </form>
               
                 </div>

@@ -7,6 +7,7 @@ const headers = new Headers({
 });
 const url = "/optionSets/KooURD3UkQb.json?fields=displayName,options[id,name]"
 const options_url = "/optionSets/yjWGG3ncKUp.json?fields=displayName,options[id,name]"
+const pStageUrl = "/programs/xWB78Xl4SV0.json?fields=id,name,organisationUnits[id,name],programStages[id,name,programStageDataElements[dataElement[id,name,valueType]]]"
 class Api{
     config = {
         baseUrl: 'https://176.57.184.192/demo/api/29',
@@ -61,9 +62,21 @@ class Api{
             .then(response => response.json());
     }
 
-    getTheDataElementsGroup = () => {
+    postTrackerEntity = (data) => {
        
-        return fetch(`${this.config.baseUrl}/dataElementGroups/BM3U6ZvyJoz.json?fields=dataElements[id,name,formName, valueType]`, {
+        return fetch(`${this.config.baseUrl}/trackedEntityInstances`, {
+            method: 'POST',
+            mode: 'cors',
+            credentials: 'include',
+            headers,
+            body: JSON.stringify(data)
+        })
+            .catch(error => error)
+            .then(response => response.json());
+    };
+
+    getProgramStagesAndDataElements = ()=>{
+        return fetch(`${this.config.baseUrl}/${pStageUrl}`, {
             method: 'GET',
             mode: 'cors',
             credentials: 'include',
@@ -71,9 +84,9 @@ class Api{
         })
             .catch(error => error)
             .then(response => response.json());
-    };
+    }
 
-    postTrackerEntity = (data) => {
+    postTrackerEntityDataElements = (data) => {
        
         return fetch(`${this.config.baseUrl}/trackedEntityInstances`, {
             method: 'POST',
