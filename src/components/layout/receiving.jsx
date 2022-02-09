@@ -101,7 +101,7 @@ saveDataElements =(event)=>{
                 <div className="btn-group" role="group" aria-label="Basic checkbox toggle button group" style={{marginBottom:"10px"}}>
                 <input type="button" className="btn-check" id="btncheck1" autocomplete="off"/>
                 <label className="btn btn-outline-primary" for="btncheck1" onClick={this.handleShow}>
-                    <FaIcons.FaPlus/> New
+                    <FaIcons.FaPlus/> New egg information
                     
                 </label>
 
