@@ -8,39 +8,9 @@
   text-align: center;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
-}
-
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
-}
-
-.App-link {
-  color: #61dafb;
-}
-/* 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
-} */
-
 .bg_color{
   background-color: #3c64B4 !important;
-}
+} 
 
 .nav.nav-pills .nav-link.active {
   background-color: #3c64B4 !important;
@@ -81,20 +51,48 @@
 .margin-css{
   position: relative;
   margin-right: 0 !important;
-}
+} 
 
-.height-css{
-  height: 100vh;
-}
-.poststatus{
-  visibility: hidden;
-}
-
-.poss{
-  position: absolute;
+.footer-css{
+  display: block;
   bottom: 0;
   width: 100%;
+  text-align: center;
+  background-color: #3c64B4 !important;
+  height: 50px !important;
+  color: white !important;
 }
+.bg_color{
+  background-color: #3c64B4 !important;
+} 
 .border-info-css{
   border: 2px solid #bac3d3 !important;
+}
+.form-select-css{
+  color: rgb(246, 248, 248);
+  border: solid 1px rgb(247, 248, 248);
+  background: transparent;
+}
+.fl{
+  background-color: #3c64B4 !important;
+}
+.tb-css{
+  color: #3c64B4 !important;
+}
+.nav-css{
+  
+  background-color: #3c64B4;
+}
+.nav2-css{
+  justify-content: space-between;
+}
+.logo-css{
+  cursor: pointer !important;
+  border-radius: 40px;
+}
+.card-css{
+  background-color:#ccd6f3;
+}
+.pointer{
+  cursor: pointer;
 }

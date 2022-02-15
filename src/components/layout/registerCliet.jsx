@@ -2,6 +2,7 @@
 import React  from 'react'
 import Api from './apiController'
 import { ThreeDots } from 'react-loader-spinner'
+import $ from "jquery"
 
 
 export default class RegiserClient extends React.Component{
@@ -19,17 +20,21 @@ export default class RegiserClient extends React.Component{
             orgUnit: "",
             incubatoroptions:[],
             loading: true,
+         
 
             // initialising all form fileds for trackedEntityAttributes
             client_name:"", client_phone_number:"", incubator_numbers:"", poultry_specie:""
         }
 
+    
     componentDidMount(){
         this.getTrackedEntityAttributesPrograms()
         this.getTrackedPrograms()
         this.getOptions()
         this.getIncubatorOptions()
         this.programStageFunction()
+      
+    
     }
     
 // requesting all tracked entities under the current/selected program tracker
@@ -69,6 +74,7 @@ export default class RegiserClient extends React.Component{
         return date;
     }
 
+
     programStageFunction(){
         let stages = []
         let pStages = []
@@ -107,9 +113,9 @@ export default class RegiserClient extends React.Component{
             "orgUnit": "wKFFg76w4Wf",
             "attributes": payload,
             "enrollments": enroll,
-            "events": this.state.program_stages
+            // "events": this.state.program_stages
             }
-            
+// calling the fuction from api controller which returns the promise, then this function get the json data from the promise
         Api.postTrackerEntity(final_payload).then(res=>{
             if (res.httpStatusCode === 200 ) {
                 
@@ -121,18 +127,20 @@ export default class RegiserClient extends React.Component{
         })
     
     }
-
+// setting attributes values and ids from the form inputs
+// this is an onchange function which detect the value change from the field and keep it for post 
     submitToRecieving =(event)=>{
         this.setState({
             [event.target.name] : {"attribute":event.target.id, "value":event.target.value}
         })
     }
-
-
-
+// a function that is gettting id from the hatchery program
     setProgramId = (event) =>{
         this.setState({programId : event.target.value })
     }
+
+    
+   
 
     render(){
         let tracked = this.state.trackedEntityAttributes
@@ -149,6 +157,8 @@ export default class RegiserClient extends React.Component{
                                 </div>
                                 <div className='col-md-8'>
                         <select class="form-select" id={entity.trackedEntityAttribute.id} name={this.state.incubatorOptionDisplayname.toLowerCase().split(" ")[0]+"_"+this.state.incubatorOptionDisplayname.toLowerCase().split(" ")[1]} aria-label="Batch number" onChange={this.submitToRecieving}>
+                        <option>0</option>
+                        
                         {
                            this.state.incubatoroptions.map((optio, key)=>{
                             return <option value={optio.name}>
@@ -175,6 +185,7 @@ export default class RegiserClient extends React.Component{
                                 </div>
                                 <div className='col-md-8'>
                     <select class="form-select" id={entity.trackedEntityAttribute.id} name={this.state.optiondisplayname.toLowerCase().split(" ")[0]+"_"+this.state.optiondisplayname.toLowerCase().split(" ")[1]} aria-label="Default select example" onChange={this.submitToRecieving}>
+                        <option>Specie</option>
                     {
                        this.state.programOption.map((opt, key)=>{
                         return <option 
@@ -231,32 +242,17 @@ export default class RegiserClient extends React.Component{
         }
         
         return(
-            <div>
-                <br/>
-                <br/>
-                <br/>
-                {/* <div className='row'>
-                <div className='col-md-4'></div>
-                <div className='col-md-4'>
-                <select class="form-select" aria-label="Default select example" onChange={this.setProgramId}>
-                    {
-                        entityPrograms()
-                    }
-                        
-                </select>
-                </div>
-                <div className='col-md-4'></div>
-                </div> */}
-                <br/>
+            <div className='m-4'>
+               
                 <div className='row'>
                     <div className='col-md-2'></div>
-                    <div className='col-md-8'>
-                    <div class="border border-info-css " style={{borderRadius:"20px", padding:"15px"}}>
-                    <form>
+                    <div className='col-md-8' style={{textAlign:"center"}}>
+                    <div class="border">
+                    <form id='form_id'>
                         {
                             forms()
                         }
-
+ 
                         {
                             loadingFunction()
                         }
@@ -265,11 +261,8 @@ export default class RegiserClient extends React.Component{
                     
                     </div>
                     <div className='col-md-2'></div>
-
                    
-              
-                </div>
-           
+                   </div>
             </div>
         )
     }

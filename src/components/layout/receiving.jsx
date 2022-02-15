@@ -38,16 +38,16 @@ handleClose = () =>{
 
 handleSave = () =>{
   let {setter_number, number_of_eggs_set_in_hatchery} = this.state
-  let payload = [setter_number, number_of_eggs_set_in_hatchery]
-  console.log(payload);
-  let events = [
+  let payload = [number_of_eggs_set_in_hatchery, setter_number]
+  let events = 
     {
       "program":"xWB78Xl4SV0",
       "orgUnit":"wKFFg76w4Wf",
       "eventDate": this.getTodaysDate(),
+      "trackedEntityInstance": "RIQgKpS15my",
       "programStage": "BqPkDKSL8sS",
       "dataValues": payload
-    }]
+    }
     Api.postTrackerEntityDataElements(events).then(res=>{
       console.log(res);
     })
@@ -68,8 +68,7 @@ saveDataElements =(event)=>{
 
           this.setState({
               [event.target.name] : {"dataElement":event.target.id, "value":event.target.value}
-          })
-      
+          })   
 }
     render() {
       let progrmStagesData = this.state.formProgramStageDataElements
@@ -101,8 +100,8 @@ saveDataElements =(event)=>{
                 <div className="btn-group" role="group" aria-label="Basic checkbox toggle button group" style={{marginBottom:"10px"}}>
                 <input type="button" className="btn-check" id="btncheck1" autocomplete="off"/>
                 <label className="btn btn-outline-primary" for="btncheck1" onClick={this.handleShow}>
-                    <FaIcons.FaPlus/> New egg information
-                    
+                    <FaIcons.FaPlus/> New
+            
                 </label>
 
                 </div>
@@ -137,193 +136,6 @@ saveDataElements =(event)=>{
                 </Modal.Footer>
               </Modal>
 
-
-                    {/* <Table striped bordered hover size="sm"> */}
-  {/* <thead className="table table-primary">
-    <tr>
-      <th>Edit</th>
-      <th>Date of Entry</th>
-      <th>Offloading Date</th>
-      <th>Hatchery</th>
-      <th>No. of Eggs</th>
-      <th>Setter No.</th>
-      <th>Owner</th>
-      <th>Operator</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td>
-          <FaIcons.FaEdit/>
-      </td>
-      <td>12/03/2021</td>
-      <td>30/03/2021</td>
-      <td>Long White</td>
-      <td>60</td>
-      <td>2</td>
-      <td>Mr Sadulo</td>
-      <td>Victor Khozi</td>
-    </tr>
-    <tr>
-      <td>
-      <FaIcons.FaEdit/>
-        
-      </td>
-      <td>11/03/2021</td>
-      <td>29/03/2021</td>
-      <td>Model</td>
-      <td>20</td>
-      <td>1</td>
-
-      <td>Edwin Gondwe</td>
-      <td>Issa Salamu</td>
-    </tr>
-    <tr>
-      <td>
-      <FaIcons.FaEdit/>
-          
-      </td>
-      <td>17/03/2021</td>
-      <td>05/04/2021</td>
-      <td>Long Brown</td>
-      <td>83</td>
-      <td>2</td>
-      <td>Mary JaFali</td>
-      <td>Victor Khozi</td>
-    </tr>
-
-    <tr>
-      <td>
-      <FaIcons.FaEdit/>
-          
-      </td>
-      <td>12/03/2021</td>
-      <td>30/03/2021</td>
-      <td>Long White</td>
-      <td>60</td>
-      <td>2</td>
-
-      <td>Mr Sadulo</td>
-      <td>Victor Khozi</td>
-    </tr>
-    <tr>
-      <td>
-      <FaIcons.FaEdit/>
-          
-      </td>
-      <td>11/03/2021</td>
-      <td>29/03/2021</td>
-      <td>Model</td>
-      <td>20</td>
-      <td>1</td>
-      
-      <td>Edwin Gondwe</td>
-      <td>Issa Salamu</td>
-    </tr>
-    <tr>
-      <td>
-      <FaIcons.FaEdit/>
-          
-      </td>
-      <td>17/03/2021</td>
-      <td>05/04/2021</td>
-      <td>Long Brown</td>
-      <td>83</td>
-      <td>3</td>
-
-      <td>Mary JaFali</td>
-      <td>Victor Khozi</td>
-    </tr>
-
-    <tr>
-      <td>
-      <FaIcons.FaEdit/>
-          
-      </td>
-      <td>12/03/2021</td>
-      <td>30/03/2021</td>
-      <td>Long White</td>
-      <td>60</td>
-      <td>3</td>
-
-      <td>Mr Sadulo</td>
-      <td>Victor Khozi</td>
-    </tr>
-    <tr>
-      <td>
-      <FaIcons.FaEdit/>
-          
-      </td>
-      <td>11/03/2021</td>
-      <td>29/03/2021</td>
-      <td>Model</td>
-      <td>20</td>
-      <td>1</td>
-
-      <td>Edwin Gondwe</td>
-      <td>Issa Salamu</td>
-    </tr>
-    <tr>
-      <td>
-      <FaIcons.FaEdit/>
-          
-      </td>
-      <td>17/03/2021</td>
-      <td>05/04/2021</td>
-      <td>Long Brown</td>
-      <td>83</td>
-      <td>1</td>
-
-      <td>Mary JaFali</td>
-      <td>Victor Khozi</td>
-    </tr>
-
-    <tr>
-      <td>
-      <FaIcons.FaEdit/>
-          
-      </td>
-      <td>12/03/2021</td>
-      <td>30/03/2021</td>
-      <td>Long White</td>
-      <td>60</td>
-      <td>2</td>
-
-      <td>Mr Sadulo</td>
-      <td>Victor Khozi</td>
-    </tr>
-    <tr>
-      <td>
-      <FaIcons.FaEdit/>
-          
-      </td>
-      <td>11/03/2021</td>
-      <td>29/03/2021</td>
-      <td>Model</td>
-      <td>20</td>
-      <td>3</td>
-
-      <td>Edwin Gondwe</td>
-      <td>Issa Salamu</td>
-    </tr>
-    <tr>
-      <td>
-      <FaIcons.FaEdit/>
-          
-      </td>
-      <td>17/03/2021</td>
-      <td>05/04/2021</td>
-      <td>Long Brown</td>
-      <td>83</td>
-      <td>2</td>
-
-      <td>Mary JaFali</td>
-      <td>Victor Khozi</td>
-    </tr>
-
-    
-  </tbody>
-</Table> */}
                     </div>
 
                 </div>

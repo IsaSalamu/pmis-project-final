@@ -8,6 +8,9 @@ const headers = new Headers({
 const url = "/optionSets/KooURD3UkQb.json?fields=displayName,options[id,name]"
 const options_url = "/optionSets/yjWGG3ncKUp.json?fields=displayName,options[id,name]"
 const pStageUrl = "/programs/xWB78Xl4SV0.json?fields=id,name,organisationUnits[id,name],programStages[id,name,programStageDataElements[dataElement[id,name,valueType]]]"
+const pStageUrl2 = "?fields=id,name,organisationUnits[id,name],programStages[id,name,programStageDataElements[dataElement[id,name,valueType]]]"
+const tei_url = "/trackedEntityInstances/query.json?ou=wKFFg76w4Wf&program=xWB78Xl4SV0"
+const tei_url2 = "/trackedEntityInstances"
 class Api{
     config = {
         baseUrl: 'https://176.57.184.192/demo/api/29',
@@ -70,6 +73,20 @@ class Api{
             credentials: 'include',
             headers,
             body: JSON.stringify(data)
+           
+        })
+            .catch(error => error)
+            .then(response => response.json());
+    };
+
+    getTrackerEntityInstance = (tei_id, program_id, orgUnit_id) => {
+       
+        return fetch(`${this.config.baseUrl}/${tei_url2}/${tei_id}.json?program=${program_id}&ou=${orgUnit_id}`, {
+            method: 'GET',
+            mode: 'cors',
+            credentials: 'include',
+            headers,
+          
         })
             .catch(error => error)
             .then(response => response.json());
@@ -86,9 +103,20 @@ class Api{
             .then(response => response.json());
     }
 
+    getProgramStagesAndDataElementsAndProgram = (programId)=>{
+        return fetch(`${this.config.baseUrl}/programs/${programId}.json${pStageUrl2}`, {
+            method: 'GET',
+            mode: 'cors',
+            credentials: 'include',
+            headers,
+        })
+            .catch(error => error)
+            .then(response => response.json());
+    }
+
     postTrackerEntityDataElements = (data) => {
        
-        return fetch(`${this.config.baseUrl}/trackedEntityInstances`, {
+        return fetch(`${this.config.baseUrl}/events`, {
             method: 'POST',
             mode: 'cors',
             credentials: 'include',
@@ -99,6 +127,15 @@ class Api{
             .then(response => response.json());
     };
 
-
+    getTheTrackedEI = ()=>{
+        return fetch(`${this.config.baseUrl}/${tei_url}`, {
+            method: 'GET',
+            mode: 'cors',
+            credentials: 'include',
+            headers,
+        })
+            .catch(error => error)
+            .then(response => response.json());
+    }
 }
 export default new Api();

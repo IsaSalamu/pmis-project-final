@@ -10,11 +10,11 @@ import UploadFile from './uploadFile'
 export default class Dashboard extends Component {
     render() {
         return (
-            <div>
-                <br/>
+            <div className='m-4'>
+                
               <div className="row">
-                  
-                  <div className='col-md-12'>
+                  <div className='col-sm-1'></div>
+                  <div className='col-sm-10'>
                   <div className="row">
                     
                     <div className="col-sm-12">
@@ -58,6 +58,8 @@ export default class Dashboard extends Component {
                 </div>
                 
                   </div>
+                  <div className='col-sm-1'></div>
+
                                 </div>
             </div>
         )
