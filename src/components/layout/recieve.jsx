@@ -15,21 +15,18 @@ export default function Recieve() {
             // console.log(instance.attributes);
             trackedentityInstanceData(instance.attributes)
         })
-    }, [data])
 
-    useEffect(() => {
-        let progId = localStorage.getItem("programId")
-        Api.getProgramStagesAndDataElementsAndProgram(JSON.parse(progId)).then(programs => {
+        Api.getProgramStagesAndDataElementsAndProgram(JSON.parse(pgId)).then(programs => {
             // console.log(programs.programStages);
             programStagesFunction(programs.programStages)
         })
-    }, [stages])
+    }, [data, stages])
 
     const displayForm = (e) => {
         stages.map((data) => {
             if (data.id === e.target.id) {
                 programStagesDataElementFields(data.programStageDataElements)
-                console.log(data.programStageDataElements);
+                // console.log(data.programStageDataElements);
             }
         })
     }
@@ -41,7 +38,7 @@ export default function Recieve() {
                     <div className='pg-css d-flex justify-content-between w-100'>
                         {stages.map((stage, key) => {
 
-                            return <div className="card mb-3 card-css text-center pointer" style={{ width: "16rem" }} onClick={displayForm}>
+                            return <div key={key} className="card m-2 p-1 card-css text-center pointer" style={{ width: "16rem" }} onClick={displayForm}>
                                 <div className="card-body" id={stage.id}>
                                     {stage.name}
                                 </div>
@@ -56,11 +53,22 @@ export default function Recieve() {
             <div className='row'>
                 <div className='col-sm-4'></div>
                 <div className='col-sm-4'>
+                    
                     <div className="mb-2">
 
-                    <input class="form-control" type="text" placeholder="DataElement displayName" aria-label="default input example" />
+                        {
+                            
+                            
+                               formField.length > 0? formField.map((dataElement, key)=>{
+
+                                    return <input key={key} id={dataElement.dataElement.id} className="form-control m-1" type={dataElement.dataElement.valueType} placeholder={dataElement.dataElement.name} aria-label="default input example" />
+                                }):null
+                        }
                     </div>
-                    
+                    {
+                    formField.length>0?<button className='btn btn-secondary form-control m-1 btn-css'>Save</button> : ""
+                    }
+
                 </div>
                 <div className='col-sm-2'></div>
             </div>

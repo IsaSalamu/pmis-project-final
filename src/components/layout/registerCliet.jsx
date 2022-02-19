@@ -226,7 +226,7 @@ export default class RegiserClient extends React.Component{
             return (this.state.loading?<ThreeDots color="#00BFFF" height={80} width={80} /> :<div className='row'>
                 <div className='col-md-6'>
                     <button type='button' className='form-control btn-info' style={{color:"whitesmoke"}}
-                     >Save and continue</button>
+                     disabled>Save and continue</button>
                 </div>
                 <div className='col-md-6'>
                     <button type='button' className='form-control btn-info' style={{color:"whitesmoke"}} onClick={this.submitForm}>Save and add New</button>
@@ -245,9 +245,9 @@ export default class RegiserClient extends React.Component{
             <div className='m-4'>
                
                 <div className='row'>
-                    <div className='col-md-2'></div>
-                    <div className='col-md-8' style={{textAlign:"center"}}>
-                    <div class="border">
+                    <div className='col-md-3'></div>
+                    <div className='col-md-6' style={{textAlign:"center"}}>
+                    <div class="">
                     <form id='form_id'>
                         {
                             forms()
@@ -260,7 +260,7 @@ export default class RegiserClient extends React.Component{
                     </div>
                     
                     </div>
-                    <div className='col-md-2'></div>
+                    <div className='col-md-3'></div>
                    
                    </div>
             </div>

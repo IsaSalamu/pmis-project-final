@@ -10,10 +10,11 @@ const options_url = "/optionSets/yjWGG3ncKUp.json?fields=displayName,options[id,
 const pStageUrl = "/programs/xWB78Xl4SV0.json?fields=id,name,organisationUnits[id,name],programStages[id,name,programStageDataElements[dataElement[id,name,valueType]]]"
 const pStageUrl2 = "?fields=id,name,organisationUnits[id,name],programStages[id,name,programStageDataElements[dataElement[id,name,valueType]]]"
 const tei_url = "/trackedEntityInstances/query.json?ou=wKFFg76w4Wf&program=xWB78Xl4SV0"
+const tei_url1 = "/trackedEntityInstances/query.json?ou=wKFFg76w4Wf&program="
 const tei_url2 = "/trackedEntityInstances"
 class Api{
     config = {
-        baseUrl: 'https://176.57.184.192/demo/api/29',
+        baseUrl: 'https://covmw.com/dhis2demo/api/29',
     };
 
     setConfig = config => {
@@ -127,8 +128,8 @@ class Api{
             .then(response => response.json());
     };
 
-    getTheTrackedEI = ()=>{
-        return fetch(`${this.config.baseUrl}/${tei_url}`, {
+    getTheTrackedEI = (pId)=>{
+        return fetch(`${this.config.baseUrl}/${tei_url1}${pId}`, {
             method: 'GET',
             mode: 'cors',
             credentials: 'include',

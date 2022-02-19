@@ -29,6 +29,7 @@ function App() {
 
 
               <Route path='/dashboard' exact element={<Dashboard />} />
+              <Route path='/' exact element={<Dashboard />} />
               <Route path='/clients-list' exact element={<Clients/>} />
               <Route path='/receiving' exact element={<Receiving />} />
               <Route path='/register' exact element={<RegiserClient />} />

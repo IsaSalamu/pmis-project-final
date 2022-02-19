@@ -77,7 +77,8 @@
   background-color: #3c64B4 !important;
 }
 .tb-css{
-  color: #3c64B4 !important;
+  color: #f6f9fd !important;
+  background-color: #3c64B4 !important;
 }
 .nav-css{
   
@@ -95,4 +96,7 @@
 }
 .pointer{
   cursor: pointer;
+}
+.btn-css{
+  background-color: #3c64B4;
 }

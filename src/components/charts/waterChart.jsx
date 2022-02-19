@@ -9,7 +9,7 @@ class WaterChart extends Component {
     this.state = {
       options: {
           title:{
-              text:"Water Consumption",
+              text:"Fertility Rate",
               align: "center"
           },
         legend:{
