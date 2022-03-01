@@ -5,13 +5,15 @@ const headers = new Headers({
     'Content-type': 'application/json',
     Accept: 'application/json',
 });
+
 const url = "/optionSets/KooURD3UkQb.json?fields=displayName,options[id,name]"
 const options_url = "/optionSets/yjWGG3ncKUp.json?fields=displayName,options[id,name]"
 const pStageUrl = "/programs/xWB78Xl4SV0.json?fields=id,name,organisationUnits[id,name],programStages[id,name,programStageDataElements[dataElement[id,name,valueType]]]"
 const pStageUrl2 = "?fields=id,name,organisationUnits[id,name],programStages[id,name,programStageDataElements[dataElement[id,name,valueType]]]"
-const tei_url = "/trackedEntityInstances/query.json?ou=wKFFg76w4Wf&program=xWB78Xl4SV0"
+const teiValues_url = "trackedEntityInstances/PwSSIYqjpdN.json?ou=wKFFg76w4Wf&program=xWB78Xl4SV0&fields=enrollments[events[programStage,dataValues[*]]]"
 const tei_url1 = "/trackedEntityInstances/query.json?ou=wKFFg76w4Wf&program="
 const tei_url2 = "/trackedEntityInstances"
+
 class Api{
     config = {
         baseUrl: 'https://covmw.com/dhis2demo/api/29',
@@ -130,6 +132,16 @@ class Api{
 
     getTheTrackedEI = (pId)=>{
         return fetch(`${this.config.baseUrl}/${tei_url1}${pId}`, {
+            method: 'GET',
+            mode: 'cors',
+            credentials: 'include',
+            headers,
+        })
+            .catch(error => error)
+            .then(response => response.json());
+    }
+    getTheTrackedEIDataValues = ()=>{
+        return fetch(`${this.config.baseUrl}/${teiValues_url}`, {
             method: 'GET',
             mode: 'cors',
             credentials: 'include',

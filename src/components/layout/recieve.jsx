@@ -5,13 +5,15 @@ export default function Recieve() {
     const [data, trackedentityInstanceData] = useState(null)
     const [stages, programStagesFunction] = useState([])
     const [formField, programStagesDataElementFields] = useState([])
-
+    
+    // getting program stages from dhis2 custom programs
     useEffect(() => {
         let tei = localStorage.getItem("teiId")
         let orgUId = localStorage.getItem("orgUitId")
         let pgId = localStorage.getItem("programId")
 
-        Api.getTrackerEntityInstance(JSON.parse(tei), JSON.parse(pgId), JSON.parse(orgUId)).then(instance => {
+        Api.getTrackerEntityInstance(JSON.parse(tei), JSON.parse(pgId), JSON.parse(orgUId))
+        .then(instance => {
             // console.log(instance.attributes);
             trackedentityInstanceData(instance.attributes)
         })
@@ -20,13 +22,19 @@ export default function Recieve() {
             // console.log(programs.programStages);
             programStagesFunction(programs.programStages)
         })
+
     }, [data, stages])
+
+
+
+
+
 
     const displayForm = (e) => {
         stages.map((data) => {
             if (data.id === e.target.id) {
+                // console.log(data);
                 programStagesDataElementFields(data.programStageDataElements)
-                // console.log(data.programStageDataElements);
             }
         })
     }
@@ -70,7 +78,7 @@ export default function Recieve() {
                     }
 
                 </div>
-                <div className='col-sm-2'></div>
+                <div className='col-sm-4'></div>
             </div>
         </div>
     )
