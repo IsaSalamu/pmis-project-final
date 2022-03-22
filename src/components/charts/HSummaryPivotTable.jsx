@@ -1,7 +1,8 @@
-import React, { useState, useEffect } from 'react'
-import Api from "../layout/apiController"
+import React,{useEffect, useState} from 'react'
+import Api from '../layout/apiController'
 import  Chart  from 'react-apexcharts'
-export default function Fertility() {
+
+export default function HSummaryPivotTable() {
     const [eventsData, getEventsData] = useState([]) //hook
     let folder = []
     let categoryFolder = []
@@ -10,17 +11,17 @@ export default function Fertility() {
     const [categories, getAppAnalyticsCAtegories] = useState([])
 
     useEffect(() => {
-        Api.getAnalytics().then(analyticsData => {
-
-            analyticsData.rows.map(data => {
-                folder.push(data[2])
-            })           
+        Api.getAnalyticsPivot().then(data=>{
+            // console.log(data);
+            data.rows.map(seriesData=>{
+                folder.push(seriesData[2])
+            })
         })
         getAppAnalytics(folder)
-
     },[analytics])
+
     useEffect(() => {
-        Api.getAnalytics().then(analyticsData => {
+        Api.getAnalyticsPivot().then(analyticsData => {
 
             analyticsData.rows.map(data => {
                 categoryFolder.push(data[1])
@@ -29,14 +30,6 @@ export default function Fertility() {
         getAppAnalyticsCAtegories(categoryFolder)
     },[categories])
 
-    useEffect(() => {
-
-        Api.getTheTrackedEIDataValues().then(data => {
-            getEventsData(data.trackedEntityInstances)
-            
-        })
-
-    }, [eventsData])
 
     // plot graph
     const series = [
@@ -47,7 +40,7 @@ export default function Fertility() {
     ];
     const options = {
         title:{
-            text: "H_Damaged Eggs Rate",
+            text: "HSummary Data",
             align: "center"
 
         },
@@ -59,9 +52,10 @@ export default function Fertility() {
         }
     };
 
-    return (
-        <div>
-            <Chart options={options} type="bar" series={series} width="100%" />
-        </div>
-    )
+  return (
+    <div>
+            <Chart options={options} type="bar" series={series} width="500px" />
+        
+    </div>
+  )
 }

@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import FeedChart from '../charts/feedChart'
-// import Fertility from '../charts/Fertility'
+import Fertility from '../charts/Fertility'
+import HSummaryPivotTable from '../charts/HSummaryPivotTable'
 // import MortalityChart from '../charts/MortalityChart'
 import UpcomingEvents from '../charts/upcomingEvents'
 import VaccinationChart from '../charts/vaccinationChart'
@@ -20,13 +21,14 @@ export default class Dashboard extends Component {
                             <div className='row'>
                     <div className='col-md-4'>
                     {/* <MortalityChart/> */}
-                    {/* <Fertility/> */}
+                    <Fertility/>
                     </div>
                     <div className='col-md-4'>
                      <WaterChart/>
                     </div>
                     <div className='col-md-4'>
-                     <UpcomingEvents/>
+                     {/* <UpcomingEvents/> */}
+                     <HSummaryPivotTable/>
                     </div>
 
                 </div>

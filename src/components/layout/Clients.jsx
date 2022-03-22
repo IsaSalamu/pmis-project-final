@@ -11,11 +11,16 @@ export default function Clients() {
     useEffect(() => {
         Api.getTheTrackedEI(JSON.parse(ppId)).then(t => {
             teiFunction(t.rows)
+            
+        })
+    }, [tei])
+
+    useEffect(() => {
+        Api.getTheTrackedEI(JSON.parse(ppId)).then(t => {
+            
             teiHeadersFunction(t.headers)
         })
-    }, [tei, teiHeaders])
-
-
+    }, [teiHeaders])
 
     const goToReceivingClass = (e) => {
         e.preventDefault()
