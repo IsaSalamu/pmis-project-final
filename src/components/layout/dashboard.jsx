@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import FeedChart from '../charts/feedChart'
 import Fertility from '../charts/Fertility'
+import Hatcherycharts from '../charts/Hatcherycharts'
 import HSummaryPivotTable from '../charts/HSummaryPivotTable'
 // import MortalityChart from '../charts/MortalityChart'
 import UpcomingEvents from '../charts/upcomingEvents'
@@ -11,7 +12,11 @@ import UploadFile from './uploadFile'
 export default class Dashboard extends Component {
     render() {
         return (
-            <div className='m-4'>      
+            <div className='m-4'> 
+            
+                <div className="row">
+                    <Hatcherycharts/>
+                </div>
               <div className="row">
                   <div className='col-sm-1'></div>
                   <div className='col-sm-10'>
@@ -20,15 +25,13 @@ export default class Dashboard extends Component {
                         <div className="row">
                             <div className='row'>
                     <div className='col-md-4'>
-                    {/* <MortalityChart/> */}
-                    <Fertility/>
+                  
                     </div>
                     <div className='col-md-4'>
-                     <WaterChart/>
+                    
                     </div>
                     <div className='col-md-4'>
-                     {/* <UpcomingEvents/> */}
-                     <HSummaryPivotTable/>
+                   
                     </div>
 
                 </div>
@@ -38,11 +41,11 @@ export default class Dashboard extends Component {
                 <hr/>
                 <div className='row'>
                     <div className='col-md-6'>
-                    <FeedChart/>
+                    
 
                     </div>
                     <div className='col-md-6'>
-                    <VaccinationChart/>
+                 
                     </div>
                 </div>            
                   </div>

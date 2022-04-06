@@ -42,9 +42,10 @@ export default function Fertility() {
     const series = [
         {
             name: "Temperature in Fahrenheit", //will be displayed on the y-axis
-            data: analytics
+            data: analytics 
         }
     ];
+
     const options = {
         title:{
             text: "H_Damaged Eggs Rate",

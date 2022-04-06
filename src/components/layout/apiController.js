@@ -6,6 +6,15 @@ const headers = new Headers({
     Accept: 'application/json',
 });
 
+const visualisations = "visualizations.json"
+const kol = "visualizations/UiDkTfS1qCL.json"
+const visualisationsUrl = "?fields=id,displayName~rename(name),type,displayDescription~rename(description),columns[dimension,legendSet[id],filter[*],programStage,items[dimensionItem~rename(id),displayName~rename(name),dimensionItemType]],rows[dimension,legendSet[id],filter,programStage,items[dimensionItem~rename(id),displayName~rename(name),dimensionItemType]],filters[dimension,legendSet[id],filter,programStage,items[dimensionItem~rename(id),displayName~rename(name),dimensionItemType]]"
+const programIndicatorGroup = "programIndicatorGroups/Xo43W6xJk5j.json?fields=programIndicators[id,name,program[id,name]]"
+const kk = "https://covmw.com/dhis2demo/api/37/dashboards.json"
+const lol = "https://covmw.com/dhis2demo/api/37/dashboards/EfsnvKoR63F.json?fields=id,displayName,displayDescription,favorite~rename(starred),layout,itemConfig,dashboardItems[id,type,shape,x,y,width~rename(w),height~rename(h),messages,text,appKey,reports[type,id,displayName~rename(name)],resources[id,displayName~rename(name)],users[id,displayName~rename(name)],visualization[id,displayName~rename(name),type,displayDescription~rename(description)],map[id,displayName~rename(name),type,displayDescription~rename(description)],eventReport[id,displayName~rename(name),type,displayDescription~rename(description)],eventChart[id,displayName~rename(name),type,displayDescription~rename(description)]]"
+const gg = "https://covmw.com/dhis2demo/api/37/analytics?dimension=dx:if89r3EMn1N,pe:LAST_12_WEEKS&filter=ou:npZluUGJNV6&includeNumDen=false&skipMeta=true&skipData=false"
+const analyUrl = "analytics?dimension=dx:if89r3EMn1N,pe:LAST_12_WEEKS&filter=ou:npZluUGJNV6&includeNumDen=false&skipMeta=true&skipData=false"
+
 const url = "/optionSets/KooURD3UkQb.json?fields=displayName,options[id,name]"
 const options_url = "/optionSets/yjWGG3ncKUp.json?fields=displayName,options[id,name]"
 const pStageUrl = "/programs/xWB78Xl4SV0.json?fields=id,name,organisationUnits[id,name],programStages[id,name,programStageDataElements[dataElement[id,name,valueType]]]"
@@ -17,7 +26,7 @@ const analyticsUrl = "/analytics?dimension=dx:VJzfSzWh9Jx,pe:LAST_12_WEEKS&filte
 const pivot = "analytics?dimension=dx:xWB78Xl4SV0.Bs0watr8aaw;xWB78Xl4SV0.WtNDsFF2EuK;xWB78Xl4SV0.tONh7CAj2TK;xWB78Xl4SV0.dJ4uzmQxh6O;xWB78Xl4SV0.gS2XBcAoCSL;xWB78Xl4SV0.wKOALZGAhDE,pe:LAST_3_MONTHS&filter=ou:npZluUGJNV6&includeNumDen=true"
 class Api{
     config = {
-        baseUrl: 'https://covmw.com/dhis2demo/api/29',
+        baseUrl: 'https://covmw.com/dhis2demo/api/37',
     };
 
     setConfig = config => {
@@ -34,10 +43,50 @@ class Api{
         })  .catch(error => error)
             .then(response => response.json());
     };
+    getAnalyticsData = (pe, indicator, ou) => {
+       
+        return fetch(`${this.config.baseUrl}/analytics.json?dimension=dx:${indicator},pe:${pe}&filter=ou:${ou}`, {
+            method: 'GET',
+            mode: 'cors',
+            credentials: 'include',
+            headers,
+        })  .catch(error => error)
+            .then(response => response.json());
+    };
 
     getAnalyticsPivot = () => {
        
         return fetch(`${this.config.baseUrl}/${pivot}`, {
+            method: 'GET',
+            mode: 'cors',
+            credentials: 'include',
+            headers,
+        })  .catch(error => error)
+            .then(response => response.json());
+    };
+    getProgramIndicatorGroup = () => {
+       
+        return fetch(`${this.config.baseUrl}/${programIndicatorGroup}`, {
+            method: 'GET',
+            mode: 'cors',
+            credentials: 'include',
+            headers,
+        })  .catch(error => error)
+            .then(response => response.json());
+    };
+    getVisualisations = () => {
+       
+        return fetch(`${this.config.baseUrl}/${visualisations}`, {
+            method: 'GET',
+            mode: 'cors',
+            credentials: 'include',
+            headers,
+        })  .catch(error => error)
+            .then(response => response.json());
+    };
+    getVisualisationById = (id) => {
+       
+        return fetch(`${this.config.baseUrl}/visualizations/${id}.json${visualisationsUrl}`, {
             method: 'GET',
             mode: 'cors',
             credentials: 'include',
