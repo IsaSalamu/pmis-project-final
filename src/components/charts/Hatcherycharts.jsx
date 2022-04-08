@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import Api from "../layout/apiController"
 import Chart from 'react-apexcharts'
 import ChartModule from './ChartModule';
+import { wait } from '@testing-library/user-event/dist/utils';
 
 
 function Hatcherycharts(props) {
@@ -50,29 +51,65 @@ function Hatcherycharts(props) {
 
                             if (chartName.name === visual.name) {
 
-                                analyticsD.rows.map(data => {
-                                    holder.push(data[2])
-                                    holder2.push(data[1])
+                                // analyticsD.rows.map(data => {
+                                //     holder.push({
+                                //         chart : data[2]
+                                //     })
+                                //     holder2.push({
+                                //         chart : data[1]
+                                //     })
+                                // })
+                                holder.push({
+                                    name: chartName.name,
+                                    chart: analyticsD.rows
                                 })
+
+                                setAllVisualisations(holder)
+
                             }
                         })
 
-                        setAllVisualisations(holder)
-                        setFullData(holder2)
+                        // setAllVisualisations(holder)
+                        // setFullData(holder2)
                     }) : null;
                 }
+
+
             })
 
         })
+        // console.log(allVisualisations);
+        // return <ChartModule series={allVisualisations} category={fullData} />
 
     }
 
 
     datafunction()
+
+    const setChart = () => {
+
+        // allVisualisations.map(vs=>{
+        //     console.log(vs.chart[1]);
+        // })
+        let forRows = []
+        let forColumns = []
+        for (let index = 0; index < allVisualisations.length; index++) {
+            let element = allVisualisations[index];
+            console.log(element);
+            return element.chart.map(dat => {
+                if (dat[0]) {
+                    forColumns.push(dat[1])
+                    forRows.push(dat[2])
+                }
+                return <ChartModule displayName={element.name} series={forRows} category={forColumns} />
+            })
+        }
+    }
     return (
         <div>
-            <ChartModule series={allVisualisations} category={fullData} />
-
+            {
+                setChart()
+            }
         </div>
     );
 }

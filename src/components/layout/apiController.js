@@ -15,6 +15,7 @@ const lol = "https://covmw.com/dhis2demo/api/37/dashboards/EfsnvKoR63F.json?fiel
 const gg = "https://covmw.com/dhis2demo/api/37/analytics?dimension=dx:if89r3EMn1N,pe:LAST_12_WEEKS&filter=ou:npZluUGJNV6&includeNumDen=false&skipMeta=true&skipData=false"
 const analyUrl = "analytics?dimension=dx:if89r3EMn1N,pe:LAST_12_WEEKS&filter=ou:npZluUGJNV6&includeNumDen=false&skipMeta=true&skipData=false"
 
+const eventsUrl = "events.json"
 const url = "/optionSets/KooURD3UkQb.json?fields=displayName,options[id,name]"
 const options_url = "/optionSets/yjWGG3ncKUp.json?fields=displayName,options[id,name]"
 const pStageUrl = "/programs/xWB78Xl4SV0.json?fields=id,name,organisationUnits[id,name],programStages[id,name,programStageDataElements[dataElement[id,name,valueType]]]"
@@ -43,6 +44,40 @@ class Api{
         })  .catch(error => error)
             .then(response => response.json());
     };
+
+    // get all events inorder to find program stage and program an event belong 
+    getAllEvents = () => {
+       
+        return fetch(`${this.config.baseUrl}/events.json`, {
+            method: 'GET',
+            mode: 'cors',
+            credentials: 'include',
+            headers,
+        })  .catch(error => error)
+            .then(response => response.json());
+    };
+
+    getEventByStageProgram = (id) => {
+       
+        return fetch(`${this.config.baseUrl}/events/${id}.json`, {
+            method: 'GET',
+            mode: 'cors',
+            credentials: 'include',
+            headers,
+        })  .catch(error => error)
+            .then(response => response.json());
+    };
+    getAllEvents = () => {
+       
+        return fetch(`${this.config.baseUrl}/events.json`, {
+            method: 'GET',
+            mode: 'cors',
+            credentials: 'include',
+            headers,
+        })  .catch(error => error)
+            .then(response => response.json());
+    };
+
     getAnalyticsData = (pe, indicator, ou) => {
        
         return fetch(`${this.config.baseUrl}/analytics.json?dimension=dx:${indicator},pe:${pe}&filter=ou:${ou}`, {

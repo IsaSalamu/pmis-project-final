@@ -28,7 +28,7 @@ export default function NewNavbar() {
         <div className="d-flex">
 
           <span className="d-inline-block">
-            <span className="badge poststatus">Post Results</span>
+            {/* <span className="badge poststatus">Post Results</span> */}
 
             <span className="btn bg_color position-relative" style={{ marginRight: "10px" }}>
               <FaIcons.FaUserCircle color='white' />
@@ -42,7 +42,7 @@ export default function NewNavbar() {
 
             <span style={{ marginTop: "5px" }} className="position-absolute top-0 start-1 translate-middle badge rounded-pill bg-info">
               0
-              <span className="visually-hidden">unread messages</span>
+             
             </span>
           </span>
 
@@ -71,7 +71,7 @@ export default function NewNavbar() {
               <span className='btn btn-outline-light p-1'>Register</span>
             </Link>
             <Link to="/dashboard">
-              <span className='btn btn-outline-light p-1'>Dashboad</span>
+              <span className='btn btn-outline-light p-1'>Dashboard</span>
             </Link>
 
           </div>
